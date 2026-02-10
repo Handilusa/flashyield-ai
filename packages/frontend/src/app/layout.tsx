@@ -2,6 +2,7 @@ import "@/lib/polyfill"; // Must be first
 import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
+import { AIChatbot } from "@/components/AIChatbot";
 
 export const metadata: Metadata = {
     title: "FlashYield AI | Autonomous Yield Optimization on Monad",
@@ -42,7 +43,10 @@ export default function RootLayout({
                 />
             </head>
             <body className="antialiased">
-                <Providers>{children}</Providers>
+                <Providers>
+                    {children}
+                    <AIChatbot />
+                </Providers>
             </body>
         </html>
     );
