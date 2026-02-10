@@ -1,0 +1,81 @@
+export const YieldVaultABI = [
+    {
+        type: "function",
+        name: "balances",
+        inputs: [{ name: "", type: "address" }],
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "deposit",
+        inputs: [{ name: "amount", type: "uint256" }],
+        outputs: [],
+        stateMutability: "nonpayable",
+    },
+    {
+        type: "function",
+        name: "getBalance",
+        inputs: [{ name: "user", type: "address" }],
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "getCurrentAPY",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "optimizer",
+        inputs: [],
+        outputs: [{ name: "", type: "address" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "owner",
+        inputs: [],
+        outputs: [{ name: "", type: "address" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "totalDeposits",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "usdcToken",
+        inputs: [],
+        outputs: [{ name: "", type: "address" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "withdraw",
+        inputs: [{ name: "amount", type: "uint256" }],
+        outputs: [],
+        stateMutability: "nonpayable",
+    },
+    {
+        type: "event",
+        name: "Deposited",
+        inputs: [
+            { name: "user", type: "address", indexed: true },
+            { name: "amount", type: "uint256", indexed: false },
+        ],
+    },
+    {
+        type: "event",
+        name: "Withdrawn",
+        inputs: [
+            { name: "user", type: "address", indexed: true },
+            { name: "amount", type: "uint256", indexed: false },
+        ],
+    },
+] as const;

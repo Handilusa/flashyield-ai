@@ -1,0 +1,114 @@
+# ⚡ FlashYield AI
+
+> **Autonomous yield optimization on Monad**
+
+![Monad](https://img.shields.io/badge/Network-Monad_Testnet-8338ec?style=for-the-badge&logo=monad)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Hackathon_Live-blue?style=for-the-badge)
+
+## Overview
+
+**FlashYield AI** is a decentralized application built on the **Monad Testnet** that leverages autonomous AI agents to optimize yield strategies in real-time. By continuously monitoring multiple liquidity pools (Pool A & Pool B), the protocol automatically rebalances user funds to the highest-yielding opportunity, ensuring maximum returns with zero manual intervention.
+
+Built for speed and efficiency, FlashYield takes advantage of Monad's 10,000 TPS and 1-second block times to execute complex strategies instantly.
+
+---
+
+## Features
+
+- ✅ **Smart Vault**: Non-custodial vault for secure USDC deposits.
+- ✅ **On-chain DEX**: Built-in AMM (`SimpleDEX`) for seamless MON/USDC swaps.
+- ✅ **AI-Powered Optimizer**: Autonomous agent logic monitors and predicts APY shifts.
+- ✅ **Auto-Rebalancing**: Smart contracts execute strategy shifts without user gas costs.
+- ✅ **Real-Time Tracking**: Live dashboard showing TVL, APY, and trade history.
+
+---
+
+## Tech Stack
+
+This project is built using a modern Web3 stack optimized for performance and developer experience:
+
+- **Smart Contracts**: Solidity (0.8.20), Foundry (Testing & Deployment)
+- **Frontend**: Next.js 14, TypeScript
+- **Web3 Integration**: Wagmi v2, Viem, RainbowKit
+- **Styling**: Tailwind CSS, Framer Motion (Glassmorphism UI)
+- **Network**: Monad Testnet (EVM Compatible)
+
+---
+
+## Deployed Contracts (Monad Testnet)
+
+All contracts are verified on the Monad Explorer.
+
+| Contract | Address | Explorer Link |
+|----------|---------|---------------|
+| **MockUSDC** | `0x594725CEfb4629C0074cA373A2438dF2EC2ae8D3` | [View Contract](https://testnet.monad.xyz/address/0x594725CEfb4629C0074cA373A2438dF2EC2ae8D3) |
+| **SimpleDEX** | `0x0Eb1b0A45941549e8228C6cEB26DeC7869373500` | [View Contract](https://testnet.monad.xyz/address/0x0Eb1b0A45941549e8228C6cEB26DeC7869373500) |
+| **YieldVault** | `0xd7Cb692d9bE2fB8c77088bDB9473578274E1686d` | [View Contract](https://testnet.monad.xyz/address/0xd7Cb692d9bE2fB8c77088bDB9473578274E1686d) |
+| **YieldOptimizer** | `0x21bB72aD7EBa1cFDEc61c5103829a572F007bF85` | [View Contract](https://testnet.monad.xyz/address/0x21bB72aD7EBa1cFDEc61c5103829a572F007bF85) |
+
+> **Chain ID**: `10143`
+> **RPC**: `https://testnet-rpc.monad.xyz`
+
+---
+
+## Installation & Setup
+
+Follow these steps to run the frontend locally:
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/flashyield-ai.git
+   cd flashyield-ai
+   ```
+
+2. **Install Dependencies**
+   Navigate to the frontend package:
+   ```bash
+   cd packages/frontend
+   npm install
+   ```
+
+3. **Configure Environment**
+   Create a `.env.local` file in `packages/frontend` and add your WalletConnect Project ID:
+   ```env
+   NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
+   ```
+
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## How It Works
+
+1. **Deposit**: Users deposit USDC into the `YieldVault`.
+2. **Analysis**: The `YieldOptimizer` contract (controlled by an off-chain AI agent) constantly compares APYs between Pool A and Pool B.
+3. **Execution**: When a significantly better yield is detected, the agent calls `executeRebalance()`.
+4. **Rebalance**: The contract moves funds to the superior pool in a single transaction.
+5. **Profit**: Users earn optimized yield automatically. No manual interaction required.
+
+---
+
+## Demo
+
+🎥 **[Watch the Demo Video](https://youtu.be/placeholder-link)** *(Coming Soon)*
+
+---
+
+## Hackathon
+
+Built for the **Moltiverse Hackathon** by **Monad** & **Nad.Fun**.
+
+<p align="center">
+  <img src="https://pbs.twimg.com/profile_images/1632750386762391552/6l6v0X6L_400x400.jpg" width="100" alt="Monad Logo">
+</p>
+
+This project demonstrates the power of parallel execution for complex DeFi strategies.
+
+---
+
+License: MIT
