@@ -4,7 +4,7 @@ import { streamText, tool, jsonSchema } from "ai";
 // ── Groq provider (OpenAI-compatible) ──────────────────────────
 const groq = createOpenAI({
     baseURL: "https://api.groq.com/openai/v1",
-    apiKey: process.env.GROQ_API_KEY ?? "",
+    apiKey: process.env.GROQ_API_KEY,
 });
 
 // ── System prompt ──────────────────────────────────────────────
