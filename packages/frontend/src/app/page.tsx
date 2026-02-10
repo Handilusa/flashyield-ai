@@ -167,6 +167,27 @@ export default function Home() {
             />
 
             <div className="page-content">
+                {/* ── NAVIGATION ── */}
+                <nav className="nav" style={{ top: "0" }}>
+                    <a href="#" className="nav-brand">
+                        <div className="nav-logo">⚡</div>
+                        <span className="nav-title">FlashYield AI</span>
+                    </a>
+                    <ul className="nav-links">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#optimizer">AI Agent</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#token">Token</a></li>
+                        <li><a href="#docs">Docs</a></li>
+                    </ul>
+                    {/* Real wallet connection button */}
+                    <WalletButton />
+                    <button className="nav-hamburger" aria-label="Menu">
+                        <span /><span /><span />
+                    </button>
+                </nav>
+
                 {/* ── HERO ── */}
                 <section className="section hero" style={{ paddingTop: "7rem" }}>
                     <Reveal>
