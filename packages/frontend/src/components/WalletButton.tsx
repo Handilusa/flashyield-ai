@@ -4,8 +4,8 @@ import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useSwitchChain } from "wagmi";
 
-/** Monad testnet chain ID in hex (10143) */
-const MONAD_CHAIN_ID_HEX = "0x279F"; // 10143
+/** Monad Mainnet chain ID in hex (143) */
+const MONAD_CHAIN_ID_HEX = "0x8F"; // 143
 
 /**
  * WalletButton — Custom RainbowKit connect button with robust chain switching
@@ -17,12 +17,12 @@ export function WalletButton() {
     const handleSwitch = () => {
         setSwitchError(null);
         switchChain(
-            { chainId: 10143 },
+            { chainId: 143 },
             {
                 onError: (error: any) => {
                     console.error("Switch failed:", error);
                     // If OKX fails with "URL already used" or similar blocks, prompt manual switch
-                    setSwitchError("Please switch to Monad Testnet manually in your wallet.");
+                    setSwitchError("Please switch to Monad Mainnet manually in your wallet.");
                 },
             }
         );
@@ -66,10 +66,10 @@ export function WalletButton() {
                             }
 
                             // 2. Check if we're on the wrong chain
-                            // Note: We ignore `chain.unsupported` if the ID is 10143 (Monad Testnet)
+                            // Note: We ignore `chain.unsupported` if the ID is 143 (Monad Mainnet)
                             // This handles custom RPCs in OKX Wallet that might not match our exact config
-                            const isMonad = chain.id === 10143;
-                            const isWrongChain = !isMonad && chain.id !== 10143; // Redundant but clear: we only want 10143
+                            const isMonad = chain.id === 143;
+                            const isWrongChain = !isMonad && chain.id !== 143; // Redundant but clear: we only want 143
 
                             if (isWrongChain) {
                                 return (
@@ -109,7 +109,7 @@ export function WalletButton() {
                                 );
                             }
 
-                            // 3. Connected to Monad Testnet (or recognized as such)
+                            // 3. Connected to Monad Mainnet (or recognized as such)
                             return (
                                 <button
                                     onClick={openAccountModal}

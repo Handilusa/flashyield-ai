@@ -13,22 +13,22 @@ import { mainnet } from "viem/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 /**
- * Monad Testnet chain configuration
+ * Monad Mainnet chain configuration
  */
-const monadTestnet = defineChain({
-    id: 10143,
-    name: "Monad Testnet",
-    nativeCurrency: { name: "MON", symbol: "MON", decimals: 18 },
+const monadMainnet = defineChain({
+    id: 143,
+    name: "Monad Mainnet",
+    nativeCurrency: { name: "Monad", symbol: "MON", decimals: 18 },
     rpcUrls: {
-        default: { http: ["https://testnet-rpc.monad.xyz"] },
+        default: { http: ["https://rpc.monad.xyz"] },
     },
     blockExplorers: {
         default: {
             name: "Monad Explorer",
-            url: "https://testnet.monad.xyz",
+            url: "https://explorer.monad.xyz",
         },
     },
-    testnet: true,
+    testnet: false,
 });
 
 /**
@@ -37,11 +37,10 @@ const monadTestnet = defineChain({
 const config = getDefaultConfig({
     appName: "FlashYield AI",
     projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "b19da498b2694e1183d4e2e5597ac08b",
-    chains: [mainnet, monadTestnet], // Mainnet first to prevent auto-switch on connect
+    chains: [monadMainnet],
     ssr: true,
     transports: {
-        [mainnet.id]: http(),
-        [monadTestnet.id]: http("https://testnet-rpc.monad.xyz"),
+        [monadMainnet.id]: http("https://rpc.monad.xyz"),
     },
 });
 
@@ -76,4 +75,4 @@ export function Providers({ children }: { children: React.ReactNode }) {
     );
 }
 
-export { monadTestnet };
+export { monadMainnet };

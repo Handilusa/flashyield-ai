@@ -167,41 +167,6 @@ export default function Home() {
             />
 
             <div className="page-content">
-                {/* ── TESTNET BANNER ── */}
-                <div className="testnet-banner">
-                    <AlertTriangle size={14} />
-                    <span>🧪 Running on Monad Testnet — No real funds at risk</span>
-                    <a
-                        href="https://faucet.monad.xyz"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="testnet-banner-link"
-                    >
-                        Get Testnet MON →
-                    </a>
-                </div>
-
-                {/* ── NAVIGATION ── */}
-                <nav className="nav" style={{ top: "36px" }}>
-                    <a href="#" className="nav-brand">
-                        <div className="nav-logo">⚡</div>
-                        <span className="nav-title">FlashYield AI</span>
-                    </a>
-                    <ul className="nav-links">
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#dashboard">Dashboard</a></li>
-                        <li><a href="#optimizer">AI Agent</a></li>
-                        <li><a href="#how-it-works">How It Works</a></li>
-                        <li><a href="#token">Token</a></li>
-                        <li><a href="#docs">Docs</a></li>
-                    </ul>
-                    {/* Real wallet connection button */}
-                    <WalletButton />
-                    <button className="nav-hamburger" aria-label="Menu">
-                        <span /><span /><span />
-                    </button>
-                </nav>
-
                 {/* ── HERO ── */}
                 <section className="section hero" style={{ paddingTop: "7rem" }}>
                     <Reveal>
@@ -209,7 +174,7 @@ export default function Home() {
                             <span className="hero-badge-dot" />
                             {isConnected
                                 ? `Connected: ${shortAddress}`
-                                : "Live on Monad Testnet"}
+                                : "Live on Monad Mainnet"}
                         </div>
                     </Reveal>
                     <Reveal delay={0.1}>
@@ -244,7 +209,7 @@ export default function Home() {
                                         <span className="ticker-item">
                                             🏦 Pool A: <strong>{poolApyA}%</strong> · Pool B: <strong>{poolApyB}%</strong>
                                         </span>
-                                        <span className="ticker-item">⚡ Chain: <strong>Monad Testnet</strong></span>
+                                        <span className="ticker-item">⚡ Chain: <strong>Monad Mainnet</strong></span>
                                         <span className="ticker-item">
                                             👛 USDC: <strong>{isConnected ? `${parseFloat(usdcBalance).toFixed(2)}` : "—"}</strong>
                                         </span>
@@ -311,7 +276,7 @@ export default function Home() {
                             <h2 className="section-title">Performance at a Glance</h2>
                             <p className="section-subtitle">
                                 {isConnected
-                                    ? "Real-time data from Monad testnet"
+                                    ? "Real-time data from Monad Mainnet"
                                     : "Connect your wallet to see live data"}
                             </p>
                         </div>
@@ -556,7 +521,6 @@ export default function Home() {
                                 <li><a href="#"><BookOpen size={14} style={{ display: "inline", marginRight: 6 }} />Documentation</a></li>
                                 <li><a href="#"><Github size={14} style={{ display: "inline", marginRight: 6 }} />GitHub</a></li>
                                 <li><a href="#">Audit Report</a></li>
-                                <li><a href="https://faucet.monad.xyz" target="_blank" rel="noopener noreferrer">🚰 Monad Faucet</a></li>
                             </ul>
                         </div>
                         <div>

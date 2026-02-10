@@ -104,11 +104,6 @@ export function DepositForm() {
 
     return (
         <div className="deposit-form">
-            {/* Testnet Warning */}
-            <div className="testnet-badge">
-                🧪 Monad Testnet — No real funds at risk
-            </div>
-
             {/* APY Badge */}
             <div style={{
                 display: "flex",
@@ -232,7 +227,7 @@ export function DepositForm() {
                         border: "none",
                     }}
                 >
-                    🪙 Mint 1,000 Test USDC
+                    🪙 Mint 1,000 Mock USDC
                 </button>
             )}
 
@@ -277,19 +272,6 @@ export function DepositForm() {
                     </button>
                 </div>
             )}
-
-            {/* Faucet Link */}
-            <div className="deposit-faucet">
-                Need testnet MON for gas?{" "}
-                <a
-                    href="https://faucet.monad.xyz"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="deposit-faucet-link"
-                >
-                    Get from Faucet →
-                </a>
-            </div>
         </div>
     );
 }
