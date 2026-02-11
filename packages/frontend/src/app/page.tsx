@@ -522,8 +522,8 @@ export default function Home() {
                         <div>
                             <h4 className="footer-heading">Resources</h4>
                             <ul className="footer-links">
-                                <li><a href="#"><BookOpen size={14} style={{ display: "inline", marginRight: 6 }} />Documentation</a></li>
-                                <li><a href="#"><Github size={14} style={{ display: "inline", marginRight: 6 }} />GitHub</a></li>
+                                <li><a href="https://github.com/Handilusa/flashyield-ai" target="_blank" rel="noopener noreferrer"><BookOpen size={14} style={{ display: "inline", marginRight: 6 }} />Documentation</a></li>
+                                <li><a href="https://github.com/Handilusa/flashyield-ai" target="_blank" rel="noopener noreferrer"><Github size={14} style={{ display: "inline", marginRight: 6 }} />GitHub</a></li>
                                 <li><a href="#">Audit Report</a></li>
                             </ul>
                         </div>
@@ -541,9 +541,9 @@ export default function Home() {
                         <span>© 2026 FlashYield AI — Moltiverse Hackathon Submission</span>
                         <div className="footer-socials">
                             <a href="#" className="footer-social-icon" aria-label="Twitter"><Twitter size={16} /></a>
-                            <a href="#" className="footer-social-icon" aria-label="GitHub"><Github size={16} /></a>
+                            <a href="https://github.com/Handilusa/flashyield-ai" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="GitHub"><Github size={16} /></a>
                             <a href="#" className="footer-social-icon" aria-label="Discord"><MessageCircle size={16} /></a>
-                            <a href="#" className="footer-social-icon" aria-label="Docs"><BookOpen size={16} /></a>
+                            <a href="https://github.com/Handilusa/flashyield-ai" target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="Docs"><BookOpen size={16} /></a>
                         </div>
                     </div>
                 </footer>
