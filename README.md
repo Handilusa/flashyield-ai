@@ -292,7 +292,15 @@ Contributions are welcome! Please open an issue or submit a PR.
 
 ---
 
-### Resources
-- [Monad Documentation](https://docs.monad.xyz)
-- [Viem Docs](https://viem.sh)
-- [Recharts](https://recharts.org)
+## 🔗 Resources
+
+- [Monad Documentation](https://docs.monad.xyz/) - Official Monad blockchain docs
+- [Viem Docs](https://viem.sh/) - TypeScript Web3 library used in this project
+- [Recharts](https://recharts.org/) - React charting library for yield visualization
+- [Next.js 14](https://nextjs.org/) - React framework
+- [Vercel AI SDK](https://sdk.vercel.ai/) - AI chatbot integration
+
+**Useful Links:**
+- [Live Demo](https://flashyield-ai.vercel.app/leaderboard) - Try Yield Wars now
+- [GitHub Issues](https://github.com/Handilusa/flashyield-ai/issues) - Report bugs
+- [Monad Explorer](https://explorer.monad.xyz/) - Verify contract addresses
