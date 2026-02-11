@@ -1,131 +1,207 @@
-# ⚡ FlashYield AI
+# ⚡ FlashYield AI: Yield Wars
 
-> **Autonomous yield optimization on Monad**
+> **Autonomous AI agents competing in real-time to find the best DeFi yield strategies on Monad Mainnet**
 
 <p align="center">
-  <img src="https://avatars.githubusercontent.com/u/103144211?s=200&v=4" width="120" alt="Monad Logo">
+  <img src="https://raw.githubusercontent.com/monad-developers/brand-kit/main/monad-logomark.png" width="120" alt="Monad Logo">
 </p>
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_App-blue?style=for-the-badge&logo=vercel)](https://flashyield-ai.vercel.app)
-![Monad](https://img.shields.io/badge/Network-Monad_Testnet-8338ec?style=for-the-badge&logo=monad)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_App-blue?style=for-the-badge&logo=vercel)](https://flashyield-ai.vercel.app/leaderboard)
+![Monad](https://img.shields.io/badge/Network-Monad_Mainnet-8338ec?style=for-the-badge&logo=monad)
+![Next.js](https://img.shields.io/badge/Framework-Next.js_14-black?style=for-the-badge&logo=next.js)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Hackathon_Live-blue?style=for-the-badge)
-
-## 🤖 AI Agent Features
-
-FlashYield AI includes an intelligent conversational agent that allows users to interact with DeFi protocols using natural language.
-
-- 💬 **Natural Language DeFi**: Execute deposits, withdrawals, and swaps using simple commands.
-- 📊 **Real-time Queries**: Instantly check wallet balances, vault APY, and TVL.
-- 🔄 **Transaction Management**: Review and confirm operations directly through the chat interface.
-- ⚡ **Powered by Groq**: Utilizing **LLaMA 3.3 70B** for lightning-fast, accurate responses.
-
-### Example Commands
-- "Deposit 100 USDC"
-- "What's my vault balance?"
-- "Show current APY"
-- "Swap 0.5 MON for USDC"
 
 ---
 
-## Overview
+## 📖 Overview
 
-**FlashYield AI** is a decentralized application built on the **Monad Testnet** that leverages autonomous AI agents to optimize yield strategies in real-time. By continuously monitoring multiple liquidity pools (Pool A & Pool B), the protocol automatically rebalances user funds to the highest-yielding opportunity, ensuring maximum returns with zero manual intervention.
+**FlashYield AI** is a next-generation DeFi platform built on **Monad Mainnet**. Our flagship feature, **Yield Wars**, allows users to watch autonomous AI agents compete in real-time to maximize yield.
 
-Built for speed and efficiency, FlashYield takes advantage of Monad's 10,000 TPS and 1-second block times to execute complex strategies instantly.
+Unlike traditional yield optimizers, FlashYield employs three distinct AI personalities—**Alpha**, **Beta**, and **Gamma**—each with a unique risk appetite and rebalancing strategy. Users can observe these agents battling for the highest APY across multiple liquidity pools, visualizing the power of high-frequency DeFi strategies on Monad.
 
----
-
-## Features
-
-- ✅ **Smart Vault**: Non-custodial vault for secure USDC deposits.
-- ✅ **On-chain DEX**: Built-in AMM (`SimpleDEX`) for seamless MON/USDC swaps.
-- ✅ **AI-Powered Optimizer**: Autonomous agent logic monitors and predicts APY shifts.
-- ✅ **Auto-Rebalancing**: Smart contracts execute strategy shifts without user gas costs.
-- ✅ **Real-Time Tracking**: Live dashboard showing TVL, APY, and trade history.
+### Key Features
+- **🤖 Autonomous Agents**: Three unique strategies running in parallel.
+- **📊 Real-Time Leaderboard**: Live rankings, charts, and activity feeds.
+- **⚡ Simulations**: Powered by off-chain logic triggering every 10 seconds.
+- **🏎️ Monad Speed**: Built to showcase sub-second decision making.
 
 ---
 
-## Tech Stack
+## 🚀 Features
 
-This project is built using a modern Web3 stack optimized for performance and developer experience:
+### 🤖 3 Autonomous Agents
+Each agent has a distinct strategy for rebalancing funds:
 
-- **AI Agent**: Groq LLaMA 3.3 70B, Vercel AI SDK
-- **Smart Contracts**: Solidity (0.8.20), Foundry (Testing & Deployment)
-- **Frontend**: Next.js 14, TypeScript
-- **Web3 Integration**: Wagmi v2, Viem, RainbowKit
-- **Styling**: Tailwind CSS, Framer Motion (Glassmorphism UI)
-- **Network**: Monad Testnet (EVM Compatible)
+- **🦁 Agent Alpha (Conservative)**:
+  - **Strategy**: Waits for significant APY gaps (≥3.0%) before moving.
+  - **Goal**: Minimize transaction costs, maximize big wins.
+- **⚖️ Agent Beta (Balanced)**:
+  - **Strategy**: Rebalances on moderate gaps (≥1.5%).
+  - **Goal**: Consistent, steady growth.
+- **🦅 Agent Gamma (Aggressive)**:
+  - **Strategy**: Chases every small opportunity (≥0.5%).
+  - **Goal**: Scrape every bit of yield, high frequency.
+
+### 📊 Real-Time Competition
+- **Live Yield Chart**: Visualizes the performance of all three agents over time (Gold vs Blue vs Purple).
+- **Advanced Stats**: Tracks "Success Rate," "Best Move," and "Total Rebalances."
+- **History Log**: A scrollable, exportable record of every decision made.
+
+### 🎨 Interactive Dashboard
+- **Glassmorphic UI**: sleek, modern interface with neon accents.
+- **Tabs**: Switch between Rankings, Charts, History, and Stats.
+- **Confetti**: Celebrate the season winner with visual flair.
+
+### ⚔️ Season Controls
+- **Start/Stop**: Users control the simulation "Season."
+- **Reset**: Wipe the slate clean and start a new competition.
 
 ---
 
-## Deployed Contracts (Monad Testnet)
+## 🏗️ Architecture
 
-All contracts are verified on the Monad Explorer.
+### Smart Contracts (Monad Mainnet)
+| Contract | Address |
+|----------|---------|
+| **AgentRegistry** | `0x0c91A6706e316298f27febf2e993E152F0BA4B3a` |
+| **AgentSimulator** | `0x555d8aBA03D816dD1E3d8670bE3F4FbCe61F69C8` |
+| **YieldOptimizer** | `0x9EeFb71C4C90E0047c05485bb69748291F7fa433` |
 
-| Contract | Address | Explorer Link |
-|----------|---------|---------------|
-| **MockUSDC** | `0x594725CEfb4629C0074cA373A2438dF2EC2ae8D3` | [View Contract](https://testnet.monad.xyz/address/0x594725CEfb4629C0074cA373A2438dF2EC2ae8D3) |
-| **SimpleDEX** | `0x0Eb1b0A45941549e8228C6cEB26DeC7869373500` | [View Contract](https://testnet.monad.xyz/address/0x0Eb1b0A45941549e8228C6cEB26DeC7869373500) |
-| **YieldVault** | `0xd7Cb692d9bE2fB8c77088bDB9473578274E1686d` | [View Contract](https://testnet.monad.xyz/address/0xd7Cb692d9bE2fB8c77088bDB9473578274E1686d) |
-| **YieldOptimizer** | `0x21bB72aD7EBa1cFDEc61c5103829a572F007bF85` | [View Contract](https://testnet.monad.xyz/address/0x21bB72aD7EBa1cFDEc61c5103829a572F007bF85) |
-
-> **Chain ID**: `10143`
-> **RPC**: `https://testnet-rpc.monad.xyz`
+### Tech Stack
+| Component | Technology |
+|-----------|------------|
+| **Frontend** | Next.js 14, TypeScript, Tailwind CSS |
+| **Visuals** | Framer Motion, Recharts, Canvas Confetti |
+| **Web3** | Viem, Wagmi, RainbowKit |
+| **Contracts** | Solidity 0.8.20, Foundry |
+| **AI/Sim** | Vercel AI SDK, Groq (Chatbot), Custom Simulation Engine |
 
 ---
 
-## Installation & Setup
+## ⚡ Quick Start
 
-Follow these steps to run the frontend locally:
+### Prerequisites
+- Node.js 18+
+- npm or yarn
 
-1. **Clone the Repository**
+### Installation
+
+1. **Clone the repo**
    ```bash
    git clone https://github.com/your-username/flashyield-ai.git
-   cd flashyield-ai
+   cd flashyield-ai/packages/frontend
    ```
 
-2. **Install Dependencies**
-   Navigate to the frontend package:
+2. **Install dependencies**
    ```bash
-   cd packages/frontend
    npm install
    ```
 
-3. **Configure Environment**
-   Create a `.env.local` file in `packages/frontend` and add your WalletConnect Project ID:
+3. **Setup Environment**
+   Create `.env.local` and add:
    ```env
-   NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
+   NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_id
+   NEXT_PUBLIC_AGENT_REGISTRY_ADDRESS=0x0c91A6706e316298f27febf2e993E152F0BA4B3a
+   NEXT_PUBLIC_AGENT_SIMULATOR_ADDRESS=0x555d8aBA03D816dD1E3d8670bE3F4FbCe61F69C8
    ```
 
 4. **Run Development Server**
    ```bash
    npm run dev
    ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+5. **Access Yield Wars**
+   Open [http://localhost:3000/leaderboard](http://localhost:3000/leaderboard)
 
 ---
 
-## How It Works
+## 🧠 How It Works
 
-1. **Chat or Click**: Users can interact via the **AI Chatbot** to execute commands ("Deposit 50 USDC") or use the standard UI.
-2. **Deposit**: Funds are deposited into the `YieldVault` smart contract.
-3. **AI Analysis**: The `YieldOptimizer` AI agent (powered by **Groq LLaMA 3.3 70B**) continuously monitors on-chain data and APY rates.
-4. **Auto-Rebalance**: When a yield opportunity arises, the agent triggers `executeRebalance()` on-chain.
-5. **Profit**: The protocol automatically moves funds to the highest-yielding pool.
-
----
-
-## Hackathon
-
-Built for the **Moltiverse Hackathon** by **Monad** & **Nad.Fun**.
-
-<p align="center">
-  <img src="https://avatars.githubusercontent.com/u/103144211?s=200&v=4" width="100" alt="Monad Logo">
-</p>
-
-This project demonstrates the power of parallel execution for complex DeFi strategies.
+1. **Simulation Loop**: Every 10 seconds, the frontend triggers a simulation step via `/api/agents/simulate`.
+2. **Market Data**: The system generates dynamic mock APYs for **Pool A**, **Pool B**, and **Pool C**.
+3. **Decision Logic**:
+   ```typescript
+   // Simplified logic
+   const delta = ((bestAPY - currentAPY) / currentAPY) * 10000; // in bps
+   if (delta >= agent.threshold) {
+       // REBALANCE -> Capture Yield
+   } else {
+       // HOLD -> Earn Base Yield
+   }
+   ```
+4. **Yield Calculation**: Agents earn compound interest plus an "efficiency bonus" based on their strategy when they successfully rebalance.
 
 ---
 
-License: MIT
+## 📂 Project Structure
+
+```
+packages/frontend/
+├── src/
+│   ├── app/
+│   │   ├── leaderboard/     # Yield Wars Page
+│   │   │   └── page.tsx     # Main Logic & State
+│   │   ├── api/
+│   │   │   └── agents/      # Simulation Backend
+│   ├── components/
+│   │   ├── AgentCard.tsx    # Agent UI
+│   │   ├── YieldChart.tsx   # Recharts Integration
+│   │   ├── AgentStats.tsx   # Metrics Panel
+│   │   ├── SeasonControls.tsx
+│   │   └── ...
+│   ├── config/
+│   │   └── contracts.ts     # Addresses & ABIs
+│   └── lib/
+│       └── viem.ts          # Blockchain Client
+```
+
+---
+
+## 🚢 Deployment
+
+### Smart Contracts (Foundry)
+```bash
+forge script script/Deploy.s.sol --rpc-url https://rpc.monad.xyz --broadcast --verify
+```
+
+### Frontend (Vercel)
+The project is optimized for Vercel deployment.
+1. Connect GitHub repo to Vercel.
+2. Add Environment Variables.
+3. Deploy!
+
+---
+
+## 🎥 Demo
+
+**[Watch the Demo Video](https://your-video-link.com)**
+
+### Rankings
+![Rankings Screenshot](https://placehold.co/600x400/1e1e2e/FFF?text=Live+Rankings)
+
+### Yield Chart
+![Chart Screenshot](https://placehold.co/600x400/1e1e2e/FFF?text=Yield+Chart)
+
+---
+
+## 🏆 Hackathon: Agent Track
+
+**Yield Wars** was built specifically for the **Agent Track** to demonstrate:
+- **Autonomous Decision Making**: Agents acting without user input.
+- **Risk/Reward Modeling**: Distinct personalities (Conservative vs Aggressive).
+- **Real-Time Visualization**: Making invisible backend logic visible and exciting.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please open an issue or submit a PR.
+
+**License**: [MIT](LICENSE)
+
+---
+
+### Resources
+- [Monad Documentation](https://docs.monad.xyz)
+- [Viem Docs](https://viem.sh)
+- [Recharts](https://recharts.org)
