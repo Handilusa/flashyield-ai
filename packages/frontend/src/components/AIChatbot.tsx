@@ -1,6 +1,6 @@
 "use client";
 
-import { useChat, type UIMessage } from "ai";
+import { useChat } from "ai/react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useAccount } from "wagmi";
 import { useYieldVault } from "@/hooks/useYieldVault";
@@ -49,12 +49,66 @@ export function AIChatbot() {
     const swap = useSwap();
 
     // ── AI Chat ────────────────────────────────────
-    const { messages, input, handleInputChange, handleSubmit, isLoading, setInput } =
+    // ─── State Refs for onToolCall (avoid stale closures) ───
+    const stateRef = useRef({ vault, swap, isConnected });
+    useEffect(() => {
+        stateRef.current = { vault, swap, isConnected };
+    }, [vault, swap, isConnected]);
+
+    const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, addToolResult } =
         useChat({
             api: "/api/chat",
             onFinish: () => {
-                // scroll to bottom after AI finishes
                 setTimeout(scrollToBottom, 100);
+            },
+            async onToolCall({ toolCall }) {
+                console.log("[AIChatbot] Tool called:", toolCall.toolName);
+
+                // Use ref to get latest state
+                const { vault: v, isConnected: c } = stateRef.current;
+
+                // ── WRITE ACTIONS ──
+                if (isWriteAction(toolCall.toolName)) {
+                    // We command the UI to show the card, but we MUST return a result to the AI
+                    // to prevent it from hanging. We return a placeholder string.
+                    // The actual transaction result will be sent later via `addToolResult` 
+                    // when the user confirms the action in the UI.
+                    return "Action queued for user confirmation. Please wait for the user to confirm the transaction in the UI.";
+                }
+
+                // ── READ ACTIONS ──
+                let result = "No data available";
+                try {
+                    switch (toolCall.toolName) {
+                        case "check_vault_balance":
+                            result = c
+                                ? `Your vault balance: **${parseFloat(v.userVaultBalance).toFixed(2)} USDC**`
+                                : "Please connect your wallet first.";
+                            break;
+                        case "check_usdc_balance":
+                            result = c
+                                ? `Your USDC balance: **${parseFloat(v.usdcBalance).toFixed(2)} USDC**`
+                                : "Please connect your wallet first.";
+                            break;
+                        case "check_current_apy":
+                            result = `Current APY: **${v.currentAPY}%** (Pool A: ${v.poolApyA}% · Pool B: ${v.poolApyB}%)`;
+                            break;
+                        case "check_tvl":
+                            result = `Total Value Locked: **${parseFloat(v.totalDeposits).toLocaleString()} USDC**`;
+                            break;
+                        case "check_dex_liquidity":
+                            result = "DEX liquidity data is available on the dashboard.";
+                            break;
+                        default:
+                            result = "Data unavailable for this tool.";
+                            break;
+                    }
+                    console.log(`[AIChatbot] Read tool ${toolCall.toolName} result:`, result);
+                    return result;
+                } catch (err: any) {
+                    console.error("[AIChatbot] Tool error:", err);
+                    return "Error fetching data: " + (err.message || "Unknown error");
+                }
             },
         });
 
@@ -89,27 +143,48 @@ export function AIChatbot() {
         }
     }, [vault.hash, swap.hash]);
 
+
+
     useEffect(() => {
         if (vault.isConfirmed || swap.isConfirmed) {
-            setPendingActions((prev) =>
-                prev.map((a) =>
-                    a.status === "confirming" ? { ...a, status: "success" as const } : a
-                )
-            );
+            setPendingActions((prev) => {
+                const updated = prev.map((a) => {
+                    if (a.status === "confirming") {
+                        // NOTE: We do NOT call addToolResult here because onToolCall already returned 
+                        // a "Queued" result. Adding another result would conflict and cause UI glitches.
+                        // The UI card updating to "success" is sufficient feedback.
+                        return { ...a, status: "success" as const };
+                    }
+                    return a;
+                });
+                return updated;
+            });
+
+            // Refetch data to update balances
+            console.log("[AIChatbot] Transaction confirmed. Refetching data...");
             vault.refetchAll();
+
+            // Refetch again after 2 seconds to ensure node has indexed the change
+            setTimeout(() => {
+                vault.refetchAll();
+            }, 2000);
         }
     }, [vault.isConfirmed, swap.isConfirmed]);
 
     useEffect(() => {
         const err = vault.error || swap.error;
         if (err) {
-            setPendingActions((prev) =>
-                prev.map((a) =>
-                    a.status === "executing" || a.status === "confirming"
-                        ? { ...a, status: "error" as const, error: (err as Error).message?.slice(0, 120) || "Transaction failed" }
-                        : a
-                )
-            );
+            setPendingActions((prev) => {
+                const updated = prev.map((a) => {
+                    if (a.status === "executing" || a.status === "confirming") {
+                        // We do NOT call addToolResult here to avoid conflicts.
+                        // The UI card will show the error message.
+                        return { ...a, status: "error" as const, error: (err as Error).message?.slice(0, 120) || "Transaction failed" };
+                    }
+                    return a;
+                });
+                return updated;
+            });
         }
     }, [vault.error, swap.error]);
 
@@ -131,7 +206,6 @@ export function AIChatbot() {
                     const amt = action.args.amount;
                     if (vault.needsApproval(amt)) {
                         vault.approveUSDC(amt);
-                        // After approval, user will need to confirm deposit again
                         setPendingActions((prev) =>
                             prev.map((a) =>
                                 a.id === action.id
@@ -303,7 +377,7 @@ export function AIChatbot() {
                         </div>
                     )}
 
-                    {messages.map((msg: UIMessage) => (
+                    {messages.map((msg: any) => (
                         <div
                             key={msg.id}
                             className={`chat-msg ${msg.role === "user" ? "chat-msg-user" : "chat-msg-bot"}`}
@@ -344,14 +418,12 @@ export function AIChatbot() {
                                     );
 
                                     if (!existingAction) {
-                                        // Create pending action for confirmation
                                         const newAction: PendingAction = {
                                             id: invocation.toolCallId,
                                             toolName,
                                             args: invocation.args || {},
                                             status: "pending",
                                         };
-                                        // Use setTimeout to avoid state update during render
                                         setTimeout(() => {
                                             setPendingActions((prev) => {
                                                 if (prev.find((a) => a.id === newAction.id))
@@ -406,21 +478,23 @@ export function AIChatbot() {
                                                                 </button>
                                                                 <button
                                                                     className="chat-tx-reject"
-                                                                    onClick={() =>
-                                                                        setPendingActions(
-                                                                            (prev) =>
-                                                                                prev.map((a) =>
-                                                                                    a.id ===
-                                                                                        action.id
-                                                                                        ? {
-                                                                                            ...a,
-                                                                                            status: "error" as const,
-                                                                                            error: "Cancelled by user",
-                                                                                        }
-                                                                                        : a
-                                                                                )
-                                                                        )
-                                                                    }
+                                                                    onClick={() => {
+                                                                        addToolResult({
+                                                                            toolCallId: action.id,
+                                                                            result: "Transaction cancelled by user"
+                                                                        });
+                                                                        setPendingActions((prev) =>
+                                                                            prev.map((a) =>
+                                                                                a.id === action.id
+                                                                                    ? {
+                                                                                        ...a,
+                                                                                        status: "error" as const,
+                                                                                        error: "Cancelled by user",
+                                                                                    }
+                                                                                    : a
+                                                                            )
+                                                                        );
+                                                                    }}
                                                                 >
                                                                     <XCircle size={14} />
                                                                     Cancel
