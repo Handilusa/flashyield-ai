@@ -184,12 +184,103 @@ The project is optimized for Vercel deployment.
 
 ---
 
-## 🏆 Hackathon: Agent Track
+## 🏆 Hackathon Submission
 
-**Yield Wars** was built specifically for the **Agent Track** to demonstrate:
-- **Autonomous Decision Making**: Agents acting without user input.
-- **Risk/Reward Modeling**: Distinct personalities (Conservative vs Aggressive).
-- **Real-Time Visualization**: Making invisible backend logic visible and exciting.
+### 📦 Deliverables
+
+- [x] **Source Code**: [GitHub Repository](https://github.com/Handilusa/flashyield-ai)
+- [x] **Live Demo**: [https://flashyield-ai.vercel.app/leaderboard](https://flashyield-ai.vercel.app/leaderboard)
+- [x] **Smart Contracts Deployed** on Monad Mainnet:
+  - AgentRegistry: `0x0c91A6706e316298f27febf2e993E152F0BA4B3a` [View on Explorer](https://explorer.monad.xyz/address/0x0c91A6706e316298f27febf2e993E152F0BA4B3a)
+  - AgentSimulator: `0x555d8aBA03D816dD1E3d8670bE3F4FbCe61F69C8` [View on Explorer](https://explorer.monad.xyz/address/0x555d8aBA03D816dD1E3d8670bE3F4FbCe61F69C8)
+  - YieldOptimizer: `0x9EeFb71C4C90E0047c05485bb69748291F7fa433` [View on Explorer](https://explorer.monad.xyz/address/0x9EeFb71C4C90E0047c05485bb69748291F7fa433)
+- [ ] **Demo Video**: Coming soon
+- [x] **Complete Documentation**: Setup, architecture, and usage instructions
+- [x] **Open Source License**: MIT
+
+### 🎯 Agent Track Requirements
+
+**Autonomous AI Agents Competition:**
+
+✅ **Autonomous Decision Making**: 3 agents with distinct risk strategies  
+✅ **On-Chain Data Integration**: Real-time APY monitoring from Monad contracts  
+✅ **Continuous Operation**: Simulations execute every 10 seconds  
+✅ **Strategy Differentiation**:
+  - Agent Alpha (Conservative): 3% rebalance threshold
+  - Agent Beta (Balanced): 1.5% rebalance threshold  
+  - Agent Gamma (Aggressive): 0.5% rebalance threshold
+
+✅ **Transparency**: Live activity feed showing all agent decisions  
+✅ **Competition Visualization**: Real-time leaderboard with yield tracking  
+✅ **Historical Data**: Complete rebalance history with export functionality
+
+### 🚀 Technical Stack
+
+| Component | Technology |
+|-----------|------------|
+| Frontend | Next.js 14, React, TypeScript |
+| Smart Contracts | Solidity 0.8.20 |
+| Blockchain | Monad Mainnet |
+| Web3 Library | viem, wagmi |
+| Charts | Recharts |
+| Styling | Tailwind CSS |
+| Animations | Framer Motion |
+| Deployment | Vercel |
+
+### 📊 Key Features
+
+- ✅ **Agent Registry System**: On-chain agent registration and management
+- ✅ **Autonomous Simulation Engine**: Off-chain decision logic with on-chain data
+- ✅ **Real-Time Yield Tracking**: Live yield accumulation per agent
+- ✅ **Competition Leaderboard**: Dynamic rankings updated every 10s
+- ✅ **Yield Progression Chart**: Visual representation of agent performance
+- ✅ **Advanced Statistics**: Success rate, best moves, average delta
+- ✅ **Rebalance History**: Filterable table with CSV export
+- ✅ **Season Controls**: Start, stop, reset competitions
+- ✅ **Responsive Design**: Mobile-optimized glassmorphic UI
+
+### 🎮 Try It Live
+
+**Quick Start:**
+1. Visit [https://flashyield-ai.vercel.app/leaderboard](https://flashyield-ai.vercel.app/leaderboard)
+2. Click **"Start Season"** button
+3. Watch the 3 agents compete in real-time
+4. Navigate between tabs:
+   - **Rankings**: Live leaderboard with agent cards
+   - **Chart**: Yield progression visualization
+   - **History**: Complete rebalancing log
+   - **Stats**: Detailed performance metrics
+5. Click **"Stop Season"** to pause and review results
+
+**Expected Behavior:**
+- Simulations run every 10 seconds
+- Agent Alpha waits for 3%+ gaps (conservative)
+- Agent Beta rebalances at 1.5%+ gaps (balanced)
+- Agent Gamma acts on 0.5%+ gaps (aggressive)
+- Yields diverge based on strategy effectiveness
+
+### 💡 Innovation Highlights
+
+**Why This Project Stands Out:**
+
+🎯 **Strategy Competition**: First agent arena showcasing competing DeFi strategies on Monad  
+🔄 **Real-Time Visualization**: Live charts showing strategy performance differences  
+🧠 **Transparent AI**: All agent decisions visible and explainable  
+⚡ **Monad-Native**: Leverages Monad's high throughput for rapid simulations  
+📊 **Educational**: Demonstrates risk/reward tradeoffs of different approaches
+
+### 📝 Submission Info
+
+- **Track**: Agent Track - Autonomous AI Agents
+- **Submitted**: February 11, 2026
+- **Team**: [Your Name/Team Name]
+- **Repository**: https://github.com/Handilusa/flashyield-ai
+- **Live Demo**: https://flashyield-ai.vercel.app/leaderboard
+- **Contact**: [Your Email/Twitter]
+
+---
+
+**⚔️ The Yield Wars await! May the best strategy win.**
 
 ---
 
