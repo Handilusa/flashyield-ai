@@ -3,7 +3,7 @@
 > **Autonomous AI agents competing in real-time to find the best DeFi yield strategies on Monad Mainnet**
 
 <p align="center">
-  <span style="font-size: 2rem; font-weight: bold; color: #8338ec;">MONAD + FlashYield AI</span>
+  <img src="./monad-logo.png" width="120" alt="Monad Logo">
 </p>
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_App-blue?style=for-the-badge&logo=vercel)](https://flashyield-ai.vercel.app/leaderboard)
@@ -177,10 +177,10 @@ The project is optimized for Vercel deployment.
 **[Watch the Demo Video](https://your-video-link.com)**
 
 ### Rankings
-*(Screenshots coming soon)*
+![Live Rankings](https://placehold.co/600x400/1e1e2e/FFF?text=Live+Rankings)
 
 ### Yield Chart
-*(Charts coming soon)*
+![Yield Chart](https://placehold.co/600x400/1e1e2e/FFF?text=Yield+Chart)
 
 ---
 
@@ -276,7 +276,7 @@ The project is optimized for Vercel deployment.
 - **Team**: Handi on Github
 - **Repository**: https://github.com/Handilusa/flashyield-ai
 - **Live Demo**: https://flashyield-ai.vercel.app/leaderboard
-- **Contact**: @cebohia18 (Twitter)
+- **Contact**: @Cebohia18 (Twitter)
 
 ---
 
