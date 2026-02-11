@@ -177,10 +177,10 @@ The project is optimized for Vercel deployment.
 **[Watch the Demo Video](https://your-video-link.com)**
 
 ### Rankings
-![Rankings Screenshot](https://placehold.co/600x400/1e1e2e/FFF?text=Live+Rankings)
+*(Screenshots coming soon)*
 
 ### Yield Chart
-![Chart Screenshot](https://placehold.co/600x400/1e1e2e/FFF?text=Yield+Chart)
+*(Charts coming soon)*
 
 ---
 
@@ -273,10 +273,10 @@ The project is optimized for Vercel deployment.
 
 - **Track**: Agent Track - Autonomous AI Agents
 - **Submitted**: February 11, 2026
-- **Team**: [Your Name/Team Name]
+- **Team**: Handi on Github
 - **Repository**: https://github.com/Handilusa/flashyield-ai
 - **Live Demo**: https://flashyield-ai.vercel.app/leaderboard
-- **Contact**: [Your Email/Twitter]
+- **Contact**: @cebohia18 (Twitter)
 
 ---
 
