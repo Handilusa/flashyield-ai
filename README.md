@@ -2,9 +2,31 @@
 
 > **Autonomous yield optimization on Monad**
 
+<p align="center">
+  <img src="https://avatars.githubusercontent.com/u/103144211?s=200&v=4" width="120" alt="Monad Logo">
+</p>
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_App-blue?style=for-the-badge&logo=vercel)](https://flashyield-ai.vercel.app)
 ![Monad](https://img.shields.io/badge/Network-Monad_Testnet-8338ec?style=for-the-badge&logo=monad)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Hackathon_Live-blue?style=for-the-badge)
+
+## 🤖 AI Agent Features
+
+FlashYield AI includes an intelligent conversational agent that allows users to interact with DeFi protocols using natural language.
+
+- 💬 **Natural Language DeFi**: Execute deposits, withdrawals, and swaps using simple commands.
+- 📊 **Real-time Queries**: Instantly check wallet balances, vault APY, and TVL.
+- 🔄 **Transaction Management**: Review and confirm operations directly through the chat interface.
+- ⚡ **Powered by Groq**: Utilizing **LLaMA 3.3 70B** for lightning-fast, accurate responses.
+
+### Example Commands
+- "Deposit 100 USDC"
+- "What's my vault balance?"
+- "Show current APY"
+- "Swap 0.5 MON for USDC"
+
+---
 
 ## Overview
 
@@ -28,6 +50,7 @@ Built for speed and efficiency, FlashYield takes advantage of Monad's 10,000 TPS
 
 This project is built using a modern Web3 stack optimized for performance and developer experience:
 
+- **AI Agent**: Groq LLaMA 3.3 70B, Vercel AI SDK
 - **Smart Contracts**: Solidity (0.8.20), Foundry (Testing & Deployment)
 - **Frontend**: Next.js 14, TypeScript
 - **Web3 Integration**: Wagmi v2, Viem, RainbowKit
@@ -85,17 +108,11 @@ Follow these steps to run the frontend locally:
 
 ## How It Works
 
-1. **Deposit**: Users deposit USDC into the `YieldVault`.
-2. **Analysis**: The `YieldOptimizer` contract (controlled by an off-chain AI agent) constantly compares APYs between Pool A and Pool B.
-3. **Execution**: When a significantly better yield is detected, the agent calls `executeRebalance()`.
-4. **Rebalance**: The contract moves funds to the superior pool in a single transaction.
-5. **Profit**: Users earn optimized yield automatically. No manual interaction required.
-
----
-
-## Demo
-
-🎥 **[Watch the Demo Video](https://youtu.be/placeholder-link)** *(Coming Soon)*
+1. **Chat or Click**: Users can interact via the **AI Chatbot** to execute commands ("Deposit 50 USDC") or use the standard UI.
+2. **Deposit**: Funds are deposited into the `YieldVault` smart contract.
+3. **AI Analysis**: The `YieldOptimizer` AI agent (powered by **Groq LLaMA 3.3 70B**) continuously monitors on-chain data and APY rates.
+4. **Auto-Rebalance**: When a yield opportunity arises, the agent triggers `executeRebalance()` on-chain.
+5. **Profit**: The protocol automatically moves funds to the highest-yielding pool.
 
 ---
 
@@ -104,7 +121,7 @@ Follow these steps to run the frontend locally:
 Built for the **Moltiverse Hackathon** by **Monad** & **Nad.Fun**.
 
 <p align="center">
-  <img src="https://pbs.twimg.com/profile_images/1632750386762391552/6l6v0X6L_400x400.jpg" width="100" alt="Monad Logo">
+  <img src="https://avatars.githubusercontent.com/u/103144211?s=200&v=4" width="100" alt="Monad Logo">
 </p>
 
 This project demonstrates the power of parallel execution for complex DeFi strategies.
