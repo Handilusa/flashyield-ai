@@ -58,6 +58,9 @@ export function AIChatbot() {
     const { messages, input, handleInputChange, handleSubmit, isLoading, setInput, addToolResult } =
         useChat({
             api: "/api/chat",
+            onError: (error) => {
+                console.error("[AIChatbot] Stream error:", error);
+            },
             onFinish: () => {
                 setTimeout(scrollToBottom, 100);
             },
