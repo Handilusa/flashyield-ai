@@ -15,12 +15,12 @@ interface LiveActivityFeedProps {
 
 export function LiveActivityFeed({ activities }: LiveActivityFeedProps) {
     return (
-        <div className="glass-card h-full flex flex-col max-h-[600px]">
-            <h3 className="text-lg font-bold mb-4 flex items-center gap-2 sticky top-0 bg-[#1A1A2E]/90 backdrop-blur-sm z-10 py-2">
+        <div className="glass-card h-full flex flex-col max-h-[600px] rounded-2xl overflow-hidden p-1">
+            <h3 className="text-lg font-bold mb-2 flex items-center gap-3 sticky top-0 bg-[#1A1A2E]/95 backdrop-blur-md z-10 px-4 py-3 border-b border-white/5 rounded-t-xl mx-0.5 mt-0.5">
                 <span className="live-dot" /> Live Agent Activity
             </h3>
-            <div className="flex-1 overflow-hidden relative">
-                <div className="absolute inset-0 overflow-y-auto pr-2 custom-scrollbar">
+            <div className="flex-1 overflow-hidden relative px-2">
+                <div className="absolute inset-0 overflow-y-auto px-2 custom-scrollbar">
                     {activities.length === 0 ? (
                         <div className="text-center text-gray-500 py-8 text-sm">
                             Waiting for season to start...
@@ -34,15 +34,15 @@ export function LiveActivityFeed({ activities }: LiveActivityFeedProps) {
                                     animate={{ opacity: 1, x: 0, height: "auto" }}
                                     exit={{ opacity: 0, x: 20, height: 0 }}
                                     transition={{ duration: 0.4 }}
-                                    className="mb-3 pb-3 border-b border-white/5 last:border-0"
+                                    className="mb-3 pb-3 border-b border-white/5 last:border-0 px-2"
                                 >
                                     <div className="flex justify-between items-start mb-1">
                                         <span
                                             className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${activity.type === "rebalance"
-                                                    ? "bg-green-500/10 text-green-400 border-green-500/20"
-                                                    : activity.type === "evaluate"
-                                                        ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
-                                                        : "bg-gray-500/10 text-gray-400 border-gray-500/20"
+                                                ? "bg-green-500/10 text-green-400 border-green-500/20"
+                                                : activity.type === "evaluate"
+                                                    ? "bg-blue-500/10 text-blue-400 border-blue-500/20"
+                                                    : "bg-gray-500/10 text-gray-400 border-gray-500/20"
                                                 }`}
                                         >
                                             {activity.type.toUpperCase()}

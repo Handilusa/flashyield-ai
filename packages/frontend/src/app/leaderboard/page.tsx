@@ -653,7 +653,7 @@ export default function LeaderboardPage() {
                             <span className="live-dot" /> Live Season
                         </div>
                         <h1 className="hero-title mb-4 max-w-3xl mx-auto">
-                            <span className="gradient-text">Agent Simulation Arena</span>
+                            <span className="gradient-text" style={{ fontFamily: "'Orbitron', sans-serif", letterSpacing: '0.02em', textShadow: '0 0 10px rgba(131,110,249,0.4), 0 0 30px rgba(131,110,249,0.2)' }}>Agent Simulation Arena</span>
                         </h1>
                         <p className="text-gray-400 max-w-2xl mx-auto text-lg mb-8">
                             Start the season to watch autonomous AI agents compete for yield in real-time.

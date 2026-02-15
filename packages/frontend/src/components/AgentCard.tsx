@@ -192,7 +192,7 @@ export function AgentCard({
                             Live Contract
                         </span>
                         <a
-                            href={`https://monadvision.com/address/${agentAddress}`}
+                            href={`https://monadexplorer.com/address/${agentAddress}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors group/link"

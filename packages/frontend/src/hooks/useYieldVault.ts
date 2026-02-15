@@ -301,7 +301,7 @@ export function useYieldVault() {
         refetchAllowance,
 
         // Constants
-        explorerUrl: "https://testnet.monad.xyz",
+        explorerUrl: "https://monadexplorer.com",
         usdcDecimals: USDC_DECIMALS,
     };
 }

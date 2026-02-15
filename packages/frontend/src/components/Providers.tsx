@@ -13,7 +13,8 @@ import { mainnet } from "viem/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 /**
- * Monad Mainnet chain configuration
+ * Monad Testnet chain configuration
+ * Chain ID: 10143
  */
 const monadMainnet = defineChain({
     id: 143,
@@ -25,7 +26,7 @@ const monadMainnet = defineChain({
     blockExplorers: {
         default: {
             name: "Monad Explorer",
-            url: "https://monadvision.com",
+            url: "https://monadexplorer.com", // Assuming mainnet explorer URL
         },
     },
     testnet: false,

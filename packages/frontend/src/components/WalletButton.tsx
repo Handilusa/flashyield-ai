@@ -4,8 +4,8 @@ import { useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useSwitchChain } from "wagmi";
 
-/** Monad Mainnet chain ID in hex (143) */
-const MONAD_CHAIN_ID_HEX = "0x8F"; // 143
+/** Monad Mainnet chain ID in hex (143 = 0x8F) */
+const MONAD_CHAIN_ID_HEX = "0x8f"; // 143
 
 /**
  * WalletButton — Custom RainbowKit connect button with robust chain switching

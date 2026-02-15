@@ -468,7 +468,7 @@ body {
 }
 
 .hero-title .gradient-text {
-  background: linear-gradient(135deg, var(--primary-light), var(--secondary), var(--tertiary));
+  background: linear-gradient(135deg, #836EF9, #A78BFA, #C4B5FD);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1066,14 +1066,23 @@ body {
   gap: 0.6rem;
 }
 
-.footer-links a {
+.footer-links a,
+.footer-links button {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.85rem;
   transition: color 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
 }
 
-.footer-links a:hover {
+.footer-links a:hover,
+.footer-links button:hover {
   color: var(--primary-light);
 }
 
@@ -1186,7 +1195,7 @@ body {
 }
 
 /* ══════════════════════════════════════════════
-   TESTNET BANNER
+   APP BANNER
    ══════════════════════════════════════════════ */
 .testnet-banner {
   position: fixed;
@@ -1278,7 +1287,7 @@ body {
   gap: 1rem;
 }
 
-.testnet-badge {
+.app-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -2393,4 +2402,25 @@ body {
     width: 50px;
     height: 50px;
   }
+}
+
+@keyframes gradient {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
