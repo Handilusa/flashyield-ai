@@ -7,13 +7,16 @@
 </div>
 
 <div align="center">
-  <a href="https://flashyield-ai.vercel.app">
+  <a href="https://flashyield-ai.vercel.app" target="_blank">
     <img src="https://img.shields.io/badge/Live_Demo-flashyield--ai.vercel.app-blue?style=for-the-badge&logo=vercel" alt="Live Demo" />
   </a>
-  <a href="https://monadexplorer.com/">
-    <img src="https://img.shields.io/badge/Network-Monad_Mainnet-8338ec?style=for-the-badge&logo=monad" alt="Monad Mainnet" />
+  <a href="https://monadvision.com/" target="_blank">
+    <img src="https://img.shields.io/badge/Network-Monad_Mainnet-8338ec?style=for-the-badge" alt="Monad Mainnet" />
   </a>
-  <a href="https://nextjs.org/">
+  <a href="https://nad.fun/tokens/0x5D3fC5c24dED074f59Fd5b86Ef7bbD5F5CA77777" target="_blank">
+    <img src="https://img.shields.io/badge/Token-$FLASH-yellow?style=for-the-badge" alt="$FLASH Token" />
+  </a>
+  <a href="https://nextjs.org/" target="_blank">
     <img src="https://img.shields.io/badge/Framework-Next.js_14-black?style=for-the-badge&logo=next.js" alt="Next.js" />
   </a>
   <a href="LICENSE">
@@ -125,20 +128,20 @@ FlashYield AI utilizes **immutable smart contracts** and **non-custodial vaults*
 
 | Contract | Address | Explorer |
 |----------|---------|----------|
-| **MockUSDC** | `0xa59BC7BCdc5483D3A0B65274A0e949E33e790e67` | [View](https://monadexplorer.com/address/0xa59BC7BCdc5483D3A0B65274A0e949E33e790e67) |
-| **SimpleDEX** | `0x8fe3e88dB65C105Cd598C1d69e9A246bDb9AdB61` | [View](https://monadexplorer.com/address/0x8fe3e88dB65C105Cd598C1d69e9A246bDb9AdB61) |
-| **YieldVault** | `0x8418185C4750957A6661eDe2d740272Ea22C140f` | [View](https://monadexplorer.com/address/0x8418185C4750957A6661eDe2d740272Ea22C140f) |
-| **YieldOptimizer** | `0x9Ee6e296FE4B3a8EFfE121B524bdf98007C24Fe3` | [View](https://monadexplorer.com/address/0x9Ee6e296FE4B3a8EFfE121B524bdf98007C24Fe3) |
-| **Agent Alpha** | `0xf1e1a9b067749adf9c296b56cf5c91f449e8bf09` | [View](https://monadexplorer.com/address/0xf1e1a9b067749adf9c296b56cf5c91f449e8bf09) |
-| **Agent Beta** | `0xe43d4b2a26c4f4c811e6527611c37d15c1fbe7c8` | [View](https://monadexplorer.com/address/0xe43d4b2a26c4f4c811e6527611c37d15c1fbe7c8) |
-| **Agent Gamma** | `0xb2902956785b53ff2717d7b1117df05b8bfc506c` | [View](https://monadexplorer.com/address/0xb2902956785b53ff2717d7b1117df05b8bfc506c) |
+| **MockUSDC** | `0xa59BC7BCdc5483D3A0B65274A0e949E33e790e67` | [View](https://monadvision.com/address/0xa59BC7BCdc5483D3A0B65274A0e949E33e790e67) |
+| **SimpleDEX** | `0x8fe3e88dB65C105Cd598C1d69e9A246bDb9AdB61` | [View](https://monadvision.com/address/0x8fe3e88dB65C105Cd598C1d69e9A246bDb9AdB61) |
+| **YieldVault** | `0x8418185C4750957A6661eDe2d740272Ea22C140f` | [View](https://monadvision.com/address/0x8418185C4750957A6661eDe2d740272Ea22C140f) |
+| **YieldOptimizer** | `0x9Ee6e296FE4B3a8EFfE121B524bdf98007C24Fe3` | [View](https://monadvision.com/address/0x9Ee6e296FE4B3a8EFfE121B524bdf98007C24Fe3) |
+| **Agent Alpha** | `0xf1e1a9b067749adf9c296b56cf5c91f449e8bf09` | [View](https://monadvision.com/address/0xf1e1a9b067749adf9c296b56cf5c91f449e8bf09) |
+| **Agent Beta** | `0xe43d4b2a26c4f4c811e6527611c37d15c1fbe7c8` | [View](https://monadvision.com/address/0xe43d4b2a26c4f4c811e6527611c37d15c1fbe7c8) |
+| **Agent Gamma** | `0xb2902956785b53ff2717d7b1117df05b8bfc506c` | [View](https://monadvision.com/address/0xb2902956785b53ff2717d7b1117df05b8bfc506c) |
 
 **Network Details:**
 - **Chain**: Monad Mainnet
 - **RPC**: `https://rpc.monad.xyz/`
 - **Chain ID**: `143`
 - **Currency**: MON
-- **Block Explorer**: https://monadexplorer.com/
+- **Block Explorer**: https://monadvision.com/
 
 ### BaseAgent.sol Architecture
 
