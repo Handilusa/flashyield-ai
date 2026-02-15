@@ -7,7 +7,7 @@ Autonomous AI agents competing in real-time to find the best DeFi yield strategi
 </div>
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-flashyield--ai.vercel.app-blue?style=for-the-badge)](https://flashyield-ai.vercel.app/leaderboard)
-[![Network](https://img.shields.io/badge/Network-Monad_Devnet-8338ec?style=for-the-badge&logo=monad)](https://monadvision.com/)
+[![Network](https://img.shields.io/badge/Network-Monad_Mainnet-8338ec?style=for-the-badge&logo=monad)](https://monadvision.com/)
 [![Framework](https://img.shields.io/badge/Framework-Next.js_14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
@@ -15,7 +15,7 @@ Autonomous AI agents competing in real-time to find the best DeFi yield strategi
 
 ## 📖 Overview
 
-FlashYield AI is a next-generation DeFi platform built on **Monad Devnet**. Our flagship feature, **Yield Wars**, allows users to watch autonomous AI agents compete in real-time to maximize yield.
+FlashYield AI is a next-generation DeFi platform built on **Monad Mainnet**. Our flagship feature, **Yield Wars**, allows users to watch autonomous AI agents compete in real-time to maximize yield.
 
 Unlike traditional yield optimizers, FlashYield employs three distinct AI personalities—**Alpha**, **Beta**, and **Gamma**—each with a unique risk appetite and rebalancing strategy. Users can observe these agents battling for the highest APY across multiple liquidity pools, visualizing the power of high-frequency DeFi strategies on Monad.
 
@@ -70,7 +70,7 @@ Each agent has a distinct strategy for rebalancing funds:
 
 ## 🏗️ Architecture
 
-### Smart Contracts (Monad Devnet)
+### Smart Contracts (Monad Mainnet)
 
 | Contract | Address | Explorer |
 |----------|---------|----------|
@@ -79,9 +79,9 @@ Each agent has a distinct strategy for rebalancing funds:
 | **Agent Gamma** | `0xb2902956785b53ff2717d7b1117df05b8bfc506c` | [View on MonadVision](https://monadvision.com/address/0xb2902956785b53ff2717d7b1117df05b8bfc506c) |
 
 **Network Details:**
-- Chain: Monad Devnet
-- RPC: `https://testnet.monad.xyz/`
-- Chain ID: `10143`
+- Chain: Monad Mainnet
+- RPC: `https://rpc.monad.xyz/`
+- Chain ID: `143`
 - Block Explorer: https://monadvision.com/
 
 ### BaseAgent.sol Architecture
@@ -167,7 +167,7 @@ cp .env.example .env.local
 
 **Frontend `.env.local`**:
 ```
-NEXT_PUBLIC_MONAD_RPC=https://testnet.monad.xyz/
+NEXT_PUBLIC_MONAD_RPC=https://rpc.monad.xyz/
 NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
 
 # Contract addresses (auto-filled from contracts.ts if configured)
@@ -179,7 +179,7 @@ NEXT_PUBLIC_AGENT_GAMMA_ADDRESS=0xb2902956785b53ff2717d7b1117df05b8bfc506c
 **Backend `.env`**:
 ```
 PRIVATE_KEY=your_wallet_private_key
-MONAD_RPC_URL=https://testnet.monad.xyz/
+MONAD_RPC_URL=https://rpc.monad.xyz/
 ```
 
 ### Run Development Server
@@ -273,7 +273,7 @@ cd packages/backend
 # Compile
 forge build
 
-# Deploy to Monad Devnet
+# Deploy to Monad Mainnet
 forge script script/DeployAgents.s.sol:DeployAgents \
   --rpc-url $MONAD_RPC_URL \
   --private-key $PRIVATE_KEY \
@@ -319,7 +319,7 @@ forge script script/DeployAgents.s.sol:DeployAgents \
 
 - [x] **Source Code**: [GitHub Repository](https://github.com/Handilusa/flashyield-ai)
 - [x] **Live Demo**: [https://flashyield-ai.vercel.app/leaderboard](https://flashyield-ai.vercel.app/leaderboard)
-- [x] **Smart Contracts Deployed** on Monad Devnet:
+- [x] **Smart Contracts Deployed** on Monad Mainnet:
     - **Agent Alpha**: `0xf1e1a9b067749adf9c296b56cf5c91f449e8bf09` - [View](https://monadvision.com/address/0xf1e1a9b067749adf9c296b56cf5c91f449e8bf09)
     - **Agent Beta**: `0xe43d4b2a26c4f4c811e6527611c37d15c1fbe7c8` - [View](https://monadvision.com/address/0xe43d4b2a26c4f4c811e6527611c37d15c1fbe7c8)
     - **Agent Gamma**: `0xb2902956785b53ff2717d7b1117df05b8bfc506c` - [View](https://monadvision.com/address/0xb2902956785b53ff2717d7b1117df05b8bfc506c)
@@ -373,16 +373,16 @@ forge script script/DeployAgents.s.sol:DeployAgents \
 
 ### Wallet not connecting?
 - Add Monad Devnet manually:
-    - **Network Name**: Monad Devnet
-    - **RPC URL**: `https://testnet.monad.xyz/`
-    - **Chain ID**: `10143`
+    - **Network Name**: Monad Mainnet
+    - **RPC URL**: `https://rpc.monad.xyz/`
+    - **Chain ID**: `143`
     - **Currency**: MON
     - **Block Explorer**: [https://monadvision.com/](https://monadvision.com/)
 
 ### TX failing?
 - Ensure sufficient MON for gas (get from faucet)
 - Check contract addresses are correct in `contracts.ts`
-- Verify wallet is connected to Monad Devnet (not mainnet)
+- Verify wallet is connected to Monad Mainnet
 - Try increasing gas limit if needed
 
 ### Stats not updating?

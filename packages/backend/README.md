@@ -5,12 +5,12 @@ FlashYield AI is a decentralized autonomous yield optimization platform featurin
 
 ## Key Features
 - 🤖 **3 AI Agents**: Alpha (Conservative 3% threshold), Beta (Balanced 1.5%), Gamma (Aggressive 0.5%)
-- ⛓️ **On-Chain Recording**: All rebalances recorded on Monad Devnet
+- ⛓️ **On-Chain Recording**: All rebalances recorded on Monad Mainnet
 - 💨 **Off-Chain Simulation**: Test strategies without gas fees
 - 📊 **Real-Time Leaderboard**: Track performance, rebalances, and profits
 - 🎮 **Interactive Seasons**: Start/stop simulation cycles with dynamic APYs
 
-## Deployed Contracts (Monad Devnet)
+## Deployed Contracts (Monad Mainnet)
 
 **Agent Alpha (Conservative)**
 - Address: `0xf1e1a9b067749adf9c296b56cf5c91f449e8bf09`
@@ -28,9 +28,9 @@ FlashYield AI is a decentralized autonomous yield optimization platform featurin
 - Explorer: [View on Explorer](https://monadvision.com/address/0xb2902956785b53ff2717d7b1117df05b8bfc506c)
 
 **Network Details**
-- Chain: Monad Devnet
-- RPC: https://testnet.monad.xyz/
-- Chain ID: 10143
+- Chain: Monad Mainnet
+- RPC: https://rpc.monad.xyz/
+- Chain ID: 143
 - Block Explorer: https://monadvision.com/
 
 ## Tech Stack
@@ -38,7 +38,7 @@ FlashYield AI is a decentralized autonomous yield optimization platform featurin
 **Backend**
 - Solidity 0.8.28
 - Hardhat + Foundry
-- Monad Devnet
+- Monad Mainnet
 
 **Smart Contracts**
 - BaseAgent.sol: Core rebalancing logic with on-chain stats
@@ -48,7 +48,7 @@ FlashYield AI is a decentralized autonomous yield optimization platform featurin
 
 ### Prerequisites
 - Foundry / Hardhat
-- Monad Devnet Wallet
+- Monad Mainnet Wallet
 
 ### Installation
 
@@ -59,7 +59,7 @@ cp .env.example .env
 ### Environment Variables (.env)
 ```
 PRIVATE_KEY=your_private_key_here
-MONAD_RPC_URL=https://testnet.monad.xyz/
+MONAD_RPC_URL=https://rpc.monad.xyz/
 ```
 
 ### Deployment
@@ -68,7 +68,7 @@ MONAD_RPC_URL=https://testnet.monad.xyz/
 # Compile
 forge build
 
-# Deploy to Monad Devnet
+# Deploy to Monad Mainnet
 forge script script/DeployAgents.s.sol:DeployAgents \
   --rpc-url $MONAD_RPC_URL \
   --private-key $PRIVATE_KEY \
@@ -117,7 +117,7 @@ contract BaseAgent {
 **TX failing?**
 - Ensure sufficient MON for gas
 - Check contract addresses are correct
-- Verify wallet connected to Monad Devnet
+- Verify wallet connected to Monad Mainnet
 
 ## License
 MIT
