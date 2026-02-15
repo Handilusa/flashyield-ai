@@ -2,6 +2,10 @@
 
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAccount, useWriteContract } from "wagmi"; // [NEW] Wagmi hooks
+import { waitForTransactionReceipt, readContract } from "wagmi/actions";
+import { useQueryClient } from "@tanstack/react-query"; // [NEW] // [NEW] for waiting & reading
+import { config } from "@/components/Providers"; // [NEW] Imported from Providers
 import { Navbar } from "@/components/Navbar";
 import { AgentCard } from "@/components/AgentCard";
 import { LiveActivityFeed, ActivityItem } from "@/components/LiveActivityFeed";
@@ -11,7 +15,11 @@ import { YieldChart } from "@/components/YieldChart";
 import { AgentStats } from "@/components/AgentStats";
 import { RebalanceHistory, HistoryItem } from "@/components/RebalanceHistory";
 import { SeasonSummary } from "@/components/SeasonSummary";
-import { RefreshCw } from "lucide-react";
+import { RefreshCw, CheckCircle2, ShieldAlert } from "lucide-react"; // [NEW] Icons
+import { AGENT_SIMULATOR_ADDRESS, AGENT_SIMULATOR_ABI } from "@/lib/agentContracts"; // [NEW] ABI
+import { AGENT_ADDRESSES } from "@/config/contracts";
+import { BASE_AGENT_ABI } from "@/lib/abis/BaseAgent";
+import { MarketTicker } from "@/components/MarketTicker"; // [NEW]
 
 interface AgentData {
     id: string;
@@ -33,22 +41,95 @@ interface AgentData {
     poolEntryTime?: number;
 }
 
+interface PendingRebalance {
+    agentId: number;
+    agentName: string;
+    fromPool: string;
+    toPool: string;
+    expectedProfit: number;
+    apyDelta: number;
+    timestamp: Date;
+    rawArgs: {
+        poolABps: bigint;
+        poolBBps: bigint;
+        profitScaled: bigint;
+    };
+}
+
 export default function LeaderboardPage() {
     const [agents, setAgents] = useState<AgentData[]>([]);
     const [activities, setActivities] = useState<ActivityItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const queryClient = useQueryClient();
 
     // Advanced State
     const [chartData, setChartData] = useState<any[]>([]);
     const [history, setHistory] = useState<HistoryItem[]>([]);
     const [activeTab, setActiveTab] = useState<"rankings" | "chart" | "history" | "stats">("rankings");
     const [showSummary, setShowSummary] = useState(false);
+    const [marketData, setMarketData] = useState<{ [key: string]: number } | null>(null); // [NEW]
 
     // Season State
     const [isSeasonActive, setIsSeasonActive] = useState(false);
     const [seasonTimer, setSeasonTimer] = useState(0);
     const [simulationCount, setSimulationCount] = useState(0);
     const [toast, setToast] = useState<{ message: string; visible: boolean } | null>(null);
+
+    // [NEW] On-Chain Recording State
+    const [enableOnChain, setEnableOnChain] = useState(false);
+    const [pendingRebalances, setPendingRebalances] = useState<PendingRebalance[]>([]);
+    const [approvedTxCount, setApprovedTxCount] = useState(0);
+    const { writeContract, writeContractAsync } = useWriteContract(); // Use Async for await
+    const { isConnected } = useAccount();
+    const MAX_DEMO_TXS = 3;
+
+    // Agent name → contract address mapping
+    const getAgentAddress = (agentName: string): `0x${string}` | undefined => {
+        if (agentName.includes("Alpha")) return AGENT_ADDRESSES[0];
+        if (agentName.includes("Beta")) return AGENT_ADDRESSES[1];
+        if (agentName.includes("Gamma")) return AGENT_ADDRESSES[2];
+        return undefined;
+    };
+
+    // Execute strategy on individual agent contract
+    const executeAgentStrategy = (agentId: number, poolABps: bigint, poolBBps: bigint, profitScaled: bigint) => {
+        const contractAddress = AGENT_ADDRESSES[agentId];
+        if (!contractAddress) return;
+
+        console.log("🔥 REBALANCE DETECTED for Agent:", agentId);
+        console.log("Agent ID:", agentId);
+        console.log("Wallet connected:", isConnected);
+        console.log("Toggle enabled:", enableOnChain);
+        console.log("Contract address:", contractAddress);
+
+        console.log("Contract address:", contractAddress);
+
+        // Args are already BigInt when called from approval
+        console.log("🚨 CALLING executeAgentStrategy NOW");
+        console.log("Args to contract (BPS/Scaled):", poolABps, poolBBps, profitScaled);
+
+        try {
+            writeContract({
+                address: contractAddress,
+                abi: BASE_AGENT_ABI,
+                functionName: "executeStrategy",
+                args: [poolABps, poolBBps, profitScaled],
+                gas: 500000n, // Ensure enough gas
+            }, {
+                onSuccess: (data) => {
+                    console.log("✅ COMMAND SENT. TX HASH:", data);
+                    showToast(`🔗 Agent ${["Alpha", "Beta", "Gamma"][agentId]} strategy executed on-chain!`);
+                },
+                onError: (err) => {
+                    console.error("❌ TX FAILED:", err);
+                    console.error("Error message:", err.message);
+                }
+            });
+        } catch (e: any) {
+            console.error("❌ executeAgentStrategy EXCEPTION:", e);
+            console.error("Exception message:", e.message);
+        }
+    };
 
     const prevLeaderRef = useRef<string | null>(null);
     const timerRef = useRef<NodeJS.Timeout | null>(null);
@@ -90,7 +171,12 @@ export default function LeaderboardPage() {
 
     // 2. Season Logic
     const startSeason = () => {
-        if (isSeasonActive) return;
+        if (isSeasonActive) {
+            showToast("Season already running!");
+            return;
+        }
+
+        console.log(`🎮 Starting season with mode: ${enableOnChain ? 'ON-CHAIN ⛓️' : 'OFF-CHAIN 💨'}`);
         setIsSeasonActive(true);
         setSeasonTimer(0);
         setSimulationCount(0);
@@ -153,9 +239,11 @@ export default function LeaderboardPage() {
 
             if (!res.ok) throw new Error("Simulation API failed");
 
-            const { results } = await res.json();
+            const { results, marketData: newMarketData } = await res.json(); // [NEW] destructure marketData
 
-            handleSimulationResults(results);
+            if (newMarketData) setMarketData(newMarketData); // [NEW] update state
+
+            handleSimulationResults(results, newMarketData || null);
             setSimulationCount((prev) => prev + 1);
         } catch (error) {
             console.error("Simulation run error:", error);
@@ -164,11 +252,60 @@ export default function LeaderboardPage() {
         }
     };
 
-    const handleSimulationResults = (results: any[]) => {
+    const handleSimulationResults = (results: any[], simMarketData: any) => {
         const timestamp = new Date().toLocaleTimeString('en-US', { hour12: false, hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
         // Snapshot for Chart
         const chartPoint: any = { time: timestamp };
+
+        // [NEW] Check for on-chain recording — execute on each agent's individual contract
+        if (enableOnChain && isConnected) {
+            console.log("✅ Conditions met for on-chain execution. Processing results...");
+            results.forEach((r: any) => {
+                // Only execute if action is REBALANCE
+                if (r.action === "REBALANCE") {
+                    let agentIndex = 0;
+                    if (r.name?.includes("Beta")) agentIndex = 1;
+                    if (r.name?.includes("Gamma")) agentIndex = 2;
+
+                    // Use market APY data if available, else defaults
+                    const poolAApy = simMarketData?.poolA_apy ? Math.floor(simMarketData.poolA_apy * 100) : 500;
+                    const poolBApy = simMarketData?.poolB_apy ? Math.floor(simMarketData.poolB_apy * 100) : 800;
+                    const profitRaw = (r.yieldGain || 0) * 1000000;
+
+                    const poolABps = BigInt(poolAApy);
+                    const poolBBps = BigInt(poolBApy);
+                    const profitScaled = BigInt(Math.floor(profitRaw));
+
+                    // Add to Pending Queue instead of executing
+                    setPendingRebalances(prev => {
+                        // FIX: Remove any existing pending rebalance for this agent (replace with new one)
+                        const filtered = prev.filter(p => p.agentId !== agentIndex);
+
+                        return [...filtered, {
+                            agentId: agentIndex,
+                            agentName: r.name,
+                            fromPool: r.fromPool,
+                            toPool: r.toPool,
+                            expectedProfit: profitRaw / 1000000,
+                            apyDelta: r.apyDelta,
+                            timestamp: new Date(),
+                            rawArgs: { poolABps, poolBBps, profitScaled }
+                        }]
+                    });
+
+                    showToast(`💡 New Rebalance Proposal for ${r.name}`);
+
+                    showToast(`💡 New Rebalance Proposal for ${r.name}`);
+                }
+            });
+        } else {
+            if (results.some((r: any) => r.action === "REBALANCE")) {
+                console.log("ℹ️ Rebalance detected but not executing on-chain.");
+                console.log("- Toggle enabled:", enableOnChain);
+                console.log("- Wallet connected:", isConnected);
+            }
+        }
 
         setAgents((prevAgents) => {
             const updatedAgents = prevAgents.map((agent) => {
@@ -265,6 +402,134 @@ export default function LeaderboardPage() {
         setTimeout(() => setToast(null), 3000);
     };
 
+    const handleApproveRebalance = async (rebalance: PendingRebalance, index: number) => {
+        try {
+            const agentAddress = AGENT_ADDRESSES[rebalance.agentId];
+            // Polyfill poolAApy/poolBapy from rawArgs to satisfy user logic (reversing BPS)
+            const poolAApy = Number(rebalance.rawArgs.poolABps) / 10000;
+            const poolBapy = Number(rebalance.rawArgs.poolBBps) / 10000;
+
+            console.log("🚀 ========================================");
+            console.log("🚀 STARTING REBALANCE #" + (approvedTxCount + 1));
+            console.log("🚀 Agent:", rebalance.agentName);
+            console.log("🚀 Address:", agentAddress);
+
+            // ========================================
+            // 1️⃣ LEER ESTADO ANTES DE TX
+            // ========================================
+            const statsBefore = await readContract(config, {
+                address: agentAddress as `0x${string}`,
+                abi: BASE_AGENT_ABI,
+                functionName: 'getStats'
+            });
+
+            // Cast to array as per ABI
+            const statsArray = statsBefore as unknown as any[];
+
+            console.log("📊 BEFORE TX:");
+            console.log("  - totalRebalances:", Number(statsArray[0]));
+            // Use logical field names in log for clarity
+            console.log("  - currentPool:", statsArray[1]);
+            console.log("  - lifetimeProfit:", Number(statsArray[2]));
+            console.log("  - threshold:", Number(statsArray[3]));
+
+            // ========================================
+            // 2️⃣ CALCULAR ARGS
+            // ========================================
+            // User formula logic preserved
+            const poolABps = Math.floor(poolAApy * 10000);
+            const poolBBps = Math.floor(poolBapy * 10000);
+            const deltaBps = Math.abs(poolBBps - poolABps);
+            const thresholdBps = Number(statsArray[3]); // Usar threshold del contrato
+            const profitScaled = Math.floor(Math.abs(rebalance.expectedProfit) * 1e6);
+
+            console.log("🔢 TX ARGS:");
+            console.log("  - poolAApy:", poolAApy, "→", poolABps, "bps");
+            console.log("  - poolBapy:", poolBapy, "→", poolBBps, "bps");
+            console.log("  - Delta:", deltaBps, "bps");
+            console.log("  - Threshold:", thresholdBps, "bps");
+            console.log("  - Profit:", profitScaled);
+            console.log("  - Will increment?", deltaBps >= thresholdBps ? "✅ YES" : "❌ NO");
+
+            if (deltaBps < thresholdBps) {
+                console.error("❌ DELTA TOO SMALL! Contract will NOT increment!");
+                alert(`Delta (${deltaBps}) < Threshold (${thresholdBps}). Contract won't increment!`);
+                return;
+            }
+
+            // ========================================
+            // 3️⃣ ENVIAR TX
+            // ========================================
+            console.log("📤 Sending TX...");
+            const hash = await writeContractAsync({
+                address: agentAddress as `0x${string}`,
+                abi: BASE_AGENT_ABI,
+                functionName: 'executeStrategy',
+                args: [BigInt(poolABps), BigInt(poolBBps), BigInt(profitScaled)]
+            });
+
+            console.log("✅ TX SENT:", hash);
+
+            // ========================================
+            // 4️⃣ ESPERAR 6 SEGUNDOS
+            // ========================================
+            console.log("⏳ Waiting 6 seconds for Monad to process...");
+            await new Promise(resolve => setTimeout(resolve, 6000));
+
+            // ========================================
+            // 5️⃣ LEER ESTADO DESPUÉS DE TX
+            // ========================================
+            console.log("🔄 Reading stats AFTER TX...");
+            const statsAfter = await readContract(config, {
+                address: agentAddress as `0x${string}`,
+                abi: BASE_AGENT_ABI,
+                functionName: 'getStats'
+            });
+            const statsAfterArray = statsAfter as unknown as any[];
+
+            console.log("📊 AFTER TX:");
+            console.log("  - totalRebalances:", Number(statsAfterArray[0]));
+            console.log("  - currentPool:", statsAfterArray[1]);
+            console.log("  - lifetimeProfit:", Number(statsAfterArray[2]));
+
+            // ========================================
+            // 6️⃣ COMPARAR
+            // ========================================
+            const beforeCount = Number(statsArray[0]);
+            const afterCount = Number(statsAfterArray[0]);
+
+            console.log("🔍 COMPARISON:");
+            console.log("  - Before:", beforeCount);
+            console.log("  - After:", afterCount);
+            console.log("  - Changed?", afterCount > beforeCount ? "✅ YES!" : "❌ NO!");
+
+            if (afterCount > beforeCount) {
+                console.log("✅✅✅ SUCCESS! INCREMENT WORKED!");
+                showToast(`✅ Rebalance recorded! ${beforeCount} → ${afterCount}`);
+            } else {
+                console.error("❌❌❌ FAILED! NO INCREMENT!");
+                console.error("Check if delta >= threshold in contract!");
+                showToast("❌ Rebalance did not increment on-chain");
+            }
+
+            // ========================================
+            // 7️⃣ FORCE REFETCH
+            // ========================================
+            queryClient.invalidateQueries();
+            setApprovedTxCount(prev => prev + 1);
+
+            console.log("🚀 ========================================");
+
+        } catch (error: any) {
+            console.error("❌ ERROR:", error);
+            showToast("❌ TX failed: " + (error.message || "Unknown error"));
+        }
+    };
+
+    const handleDismissRebalance = (index: number) => {
+        setPendingRebalances(prev => prev.filter((_, i) => i !== index));
+    };
+
     // Helper for Stats
     const getAgentStats = () => {
         return agents.map(a => ({
@@ -309,12 +574,74 @@ export default function LeaderboardPage() {
                         >
                             <span className="text-2xl">🏆</span>
                             <div>
-                                <p className="text-yellow-100 font-bold text-sm">New Leader!</p>
+                                <p className="text-yellow-100 font-bold text-sm">Update</p>
                                 <p className="text-yellow-200 text-xs">{toast.message}</p>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
+
+                {/* [NEW] Active Mode Badge */}
+                {isSeasonActive && (
+                    <div className="fixed top-24 right-4 md:right-auto md:left-1/2 md:-translate-x-1/2 z-40 px-4 py-2 rounded-full shadow-lg animate-pulse backdrop-blur-md border border-white/10">
+                        <div className={`
+                            flex items-center gap-2 
+                            ${enableOnChain ? 'text-emerald-400' : 'text-blue-400'} 
+                            font-bold text-sm tracking-wider
+                        `}>
+                            {enableOnChain ? '⛓️ ON-CHAIN MODE' : '💨 OFF-CHAIN MODE'}
+                            <span className="text-xs opacity-75 font-normal">(Active)</span>
+                        </div>
+                    </div>
+                )}
+
+                {/* Pending Rebalances Notification Stack */}
+                <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none">
+                    <AnimatePresence>
+                        {pendingRebalances.map((rebalance, index) => (
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 50 }}
+                                className="pointer-events-auto bg-gray-900/95 border border-purple-500/40 p-4 rounded-xl shadow-2xl backdrop-blur-xl w-80"
+                            >
+                                <div className="flex items-start gap-3 mb-3">
+                                    <div className="p-2 bg-purple-500/20 rounded-lg text-purple-400">
+                                        <CheckCircle2 size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-white text-sm">Better Route Found!</p>
+                                        <p className="text-xs text-purple-300 font-medium mb-1">Agent {rebalance.agentName}</p>
+                                        <div className="flex items-center gap-2 text-xs text-gray-400">
+                                            <span>{rebalance.fromPool === "0" ? "Pool A" : rebalance.fromPool === "1" ? "Pool B" : rebalance.fromPool}</span>
+                                            <span className="text-gray-600">→</span>
+                                            <span className="text-white font-bold">{rebalance.toPool === "0" ? "Pool A" : rebalance.toPool === "1" ? "Pool B" : rebalance.toPool}</span>
+                                        </div>
+                                        <p className="text-xs text-emerald-400 mt-1 font-mono">
+                                            +{rebalance.expectedProfit.toFixed(4)} USDC
+                                            <span className="opacity-75 ml-1">({rebalance.apyDelta.toFixed(0)}bps)</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        onClick={() => handleApproveRebalance(rebalance, index)}
+                                        className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-2 rounded-lg transition-colors flex items-center justify-center gap-1"
+                                    >
+                                        Approve & Exec ({approvedTxCount}/{MAX_DEMO_TXS})
+                                    </button>
+                                    <button
+                                        onClick={() => handleDismissRebalance(index)}
+                                        className="px-3 bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white text-xs font-bold rounded-lg transition-colors"
+                                    >
+                                        Dismiss
+                                    </button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </div>
 
                 <main className="section pt-32 pb-20">
                     <motion.div
@@ -332,6 +659,9 @@ export default function LeaderboardPage() {
                             Start the season to watch autonomous AI agents compete for yield in real-time.
                         </p>
 
+                        {/* [NEW] Market Ticker */}
+                        <MarketTicker marketData={marketData} />
+
                         {/* Controls */}
                         <div className="flex flex-col items-center gap-4">
                             <SeasonControls
@@ -341,6 +671,44 @@ export default function LeaderboardPage() {
                                 timer={seasonTimer}
                                 simulationCount={simulationCount}
                             />
+
+                            {/* [NEW] On-Chain Toggle */}
+                            <div className="flex items-center gap-2 mt-4 relative" title={isSeasonActive ? "Cannot change mode during active season" : "Toggle On-Chain recording"}>
+                                <label className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider transition-all border cursor-pointer ${isSeasonActive ? 'opacity-50 cursor-not-allowed border-gray-700 bg-gray-800' :
+                                    enableOnChain
+                                        ? "bg-emerald-500/20 border-emerald-500/50 text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.3)]"
+                                        : "bg-gray-800/50 border-gray-700 text-gray-500 hover:text-gray-300"
+                                    }`}>
+                                    <input
+                                        type="checkbox"
+                                        checked={enableOnChain}
+                                        onChange={(e) => {
+                                            if (isSeasonActive) {
+                                                showToast("⚠️ Cannot change On-Chain mode during active season!");
+                                                return;
+                                            }
+                                            const newValue = e.target.checked;
+                                            console.log("🔘 Toggle clicked. Previous:", enableOnChain);
+                                            setEnableOnChain(newValue);
+
+                                            if (newValue) {
+                                                showToast("✅ On-Chain mode enabled. Next season will record on Monad.");
+                                            } else {
+                                                showToast("ℹ️ Off-Chain mode. Next season will be simulated only.");
+                                            }
+                                        }}
+                                        disabled={isSeasonActive}
+                                        className="hidden"
+                                    />
+                                    {enableOnChain ? <CheckCircle2 size={14} /> : <ShieldAlert size={14} />}
+                                    <span>{enableOnChain ? "On-Chain Recording: ON" : "Enable On-Chain Recording"}</span>
+                                    {isSeasonActive && <span className="ml-2 text-[10px] bg-orange-500/20 text-orange-400 px-1.5 py-0.5 rounded">LOCKED</span>}
+                                </label>
+
+                                {enableOnChain && !isConnected && !isSeasonActive && (
+                                    <span className="text-xs text-red-400 animate-pulse font-bold">Connect Wallet!</span>
+                                )}
+                            </div>
 
                             {/* Reset Button (only when stopped & has data) */}
                             {!isSeasonActive && simulationCount > 0 && (
@@ -407,6 +775,7 @@ export default function LeaderboardPage() {
                                                         lastActionTime={agent.lastActionTime}
                                                         apyDelta={agent.apyDelta}
                                                         threshold={parseFloat(agent.rebalanceThreshold)}
+                                                        agentAddress={getAgentAddress(agent.name)}
                                                     />
                                                 ))
                                             )}

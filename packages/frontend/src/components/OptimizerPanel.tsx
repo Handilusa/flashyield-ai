@@ -178,7 +178,7 @@ export function OptimizerPanel() {
                 {hash && (
                     <a
                         className="optimizer-tx-link"
-                        href={`https://explorer.monad.xyz/tx/${hash}`}
+                        href={`https://monadvision.com/tx/${hash}`}
                         target="_blank"
                         rel="noopener noreferrer"
                     >

@@ -109,6 +109,35 @@ contract AgentSimulator is Ownable {
        the AgentRegistry.
        ════════════════════════════════════════════════════════ */
 
+    /**
+     * @notice Public function to record an off-chain simulation decision.
+     *         Allows the frontend to "prove" the agent's decision on-chain.
+     *         In a real production system, this would be restricted or signed.
+     */
+    function recordSimulationDecision(
+        uint256 agentIndex,
+        bool    rebalanced,
+        uint8   chosenPool,
+        uint256 yieldEarned
+    ) external {
+        require(agentIndex < 3, "Invalid agent index");
+
+        SimAgent storage agent = simAgents[agentIndex];
+
+        // Update state (trusting the input for this demo/simulation)
+        if (rebalanced) {
+            agent.currentPool = chosenPool;
+        }
+        agent.simulatedYield  += yieldEarned;
+        agent.simulationCount += 1;
+
+        // Persist to registry
+        // Note: The registry must allow this contract to call updateAgentStats
+        registry.updateAgentStats(agent.id, yieldEarned);
+
+        emit SimulationExecuted(agentIndex, agent.name, rebalanced, chosenPool, yieldEarned);
+    }
+
     function simulateAgentAction(uint256 agentIndex) external onlyOwner {
         require(agentIndex < 3, "Invalid agent index");
 

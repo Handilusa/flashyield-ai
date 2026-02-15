@@ -92,4 +92,16 @@ export const AGENT_SIMULATOR_ABI = [
         ],
         stateMutability: "view",
     },
+    {
+        type: "function",
+        name: "recordSimulationDecision",
+        inputs: [
+            { name: "agentIndex", type: "uint256" },
+            { name: "rebalanced", type: "bool" },
+            { name: "chosenPool", type: "uint8" },
+            { name: "yieldEarned", type: "uint256" },
+        ],
+        outputs: [],
+        stateMutability: "nonpayable",
+    },
 ] as const;

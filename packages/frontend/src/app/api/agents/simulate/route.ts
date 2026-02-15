@@ -21,14 +21,17 @@ const monadChain = {
 } as const;
 
 // ── Shared Client ──
-const publicClient = createPublicClient({
-    chain: monadChain,
-    transport: http("https://rpc.monad.xyz"),
-});
+// Moved inside GET to avoid top-level await/init issues
+// const publicClient = createPublicClient({ ... });
 
 // ── GET: Fetch initial state (read-only) ──
 export async function GET() {
     try {
+        const publicClient = createPublicClient({
+            chain: monadChain,
+            transport: http("https://rpc.monad.xyz"),
+        });
+
         const agents = await publicClient.readContract({
             address: AGENT_SIMULATOR_ADDRESS,
             abi: AGENT_SIMULATOR_ABI,
@@ -62,15 +65,28 @@ export async function POST(req: Request) {
         const body = await req.json();
         const { agents } = body; // Pass current agent state from frontend to simulate next step
 
-        // Define Mock APYs Generator
+        // Generate Mock APYs using Realistic Monad Data
         const generateMockAPYs = () => {
             const baseTime = Date.now();
-            const variance = Math.sin(baseTime / 10000) * 2; // Oscillates ±2%
+            const timeFactor = Math.sin(baseTime / 10000); // Oscillates between -1 and 1
+
+            // Pool A: Curvance (Stable)
+            const poolABase = 6.5; // from MONAD_POOLS
+            const poolAVar = (timeFactor * 0.2) + ((Math.random() - 0.5) * 0.1);
+            const poolA = poolABase + poolAVar;
+
+            // Pool B: Fastlane (Volatile)
+            const poolBBase = 14.2; // from MONAD_POOLS
+            const poolBVar = (timeFactor * 1.5) + ((Math.random() - 0.5) * 2.0);
+            const poolB = poolBBase + poolBVar;
+
+            // Pool C: Magma (Staking - Optional/Unused but good for expansion)
+            const poolC = 9.8 + ((Math.random() - 0.5) * 0.4);
 
             return {
-                "Pool A": 5.2 + variance + (Math.random() - 0.5) * 0.5,  // ~4.7% - 5.7% + variance
-                "Pool B": 6.8 - variance + (Math.random() - 0.5) * 0.8,  // ~6.0% - 7.6% - variance
-                "Pool C": 7.5 + (Math.random() - 0.5) * 1.0              // ~7.0% - 8.0%
+                "Pool A": Number(poolA.toFixed(2)),
+                "Pool B": Number(poolB.toFixed(2)),
+                "Pool C": Number(poolC.toFixed(2))
             };
         };
 
@@ -80,6 +96,10 @@ export async function POST(req: Request) {
         const results = agents.map((agent: any) => {
             // Resolve current pool APY (default to Pool A if unknown)
             let currentPoolName = agent.currentPool;
+            // Clean up pool name if it's "Pool A (Curvance)" from previous state
+            if (currentPoolName.includes("Pool A")) currentPoolName = "Pool A";
+            if (currentPoolName.includes("Pool B")) currentPoolName = "Pool B";
+
             if (!mockAPYs[currentPoolName as keyof typeof mockAPYs]) {
                 // Handle initial state 0/1 mapping or unknown string
                 if (currentPoolName === "0" || currentPoolName === 0) currentPoolName = "Pool A";
@@ -87,7 +107,7 @@ export async function POST(req: Request) {
                 else currentPoolName = "Pool A";
             }
 
-            const currentAPY = mockAPYs[currentPoolName as keyof typeof mockAPYs] || 5.0;
+            const currentAPY = mockAPYs[currentPoolName as keyof typeof mockAPYs] || 6.5;
 
             // Find best pool
             let bestPoolName = currentPoolName;
@@ -116,7 +136,7 @@ export async function POST(req: Request) {
             // 10 seconds per sim / 31536000 seconds per year
             // Multiplied by 20000x for demo visibility
             const timeFraction = 10 / 31536000;
-            const demoMultiplier = 20000;
+            const demoMultiplier = 500000; // BOOSTED x25 for visibility
 
             let yieldGain = 0;
 
@@ -137,8 +157,15 @@ export async function POST(req: Request) {
                 yieldGain = (delta * efficiencyFactor * 0.01) + noise;
             } else {
                 // HOLD EVENT: Accrue base APY
+                // Formula: APY% * time * scalar
+                // e.g., 6.5% * ...
                 yieldGain = (currentAPY * timeFraction * demoMultiplier) + noise;
             }
+
+            // Ensure yield doesn't go negative or zero for demo
+            if (yieldGain < 0.01) yieldGain = 0.05 + Math.random() * 0.05;
+
+            console.log(`[SIM] ${agent.name}: Pool=${currentPoolName} APY=${currentAPY.toFixed(2)}% -> YieldGain=${yieldGain.toFixed(4)}`);
 
             // Ensure yield doesn't go negative due to noise
             yieldGain = Math.max(0.001, yieldGain);
@@ -149,6 +176,7 @@ export async function POST(req: Request) {
                 action: shouldRebalance ? "REBALANCE" : "HOLD",
                 fromPool: currentPoolName,
                 toPool: bestPoolName,
+                // Pass back rich data
                 currentAPY,
                 bestAPY,
                 apyDelta: delta,
@@ -161,6 +189,7 @@ export async function POST(req: Request) {
         return NextResponse.json({
             success: true,
             timestamp: Math.floor(Date.now() / 1000),
+            marketData: mockAPYs,
             results
         });
 

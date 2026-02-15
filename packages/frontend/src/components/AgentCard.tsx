@@ -2,18 +2,20 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useAgentContract } from "@/hooks/useAgentContract";
 
 interface AgentCardProps {
     rank: number;
     name: string;
     strategy: string;
     yield: string;
-    rebalances: number; // Changed to number for easier handling
+    rebalances: number;
     riskLevel: number;
-    lastAction?: string; // e.g., "REBALANCE" or "HOLD"
-    lastActionTime?: string; // e.g., "2s ago"
+    lastAction?: string;
+    lastActionTime?: string;
     apyDelta?: number;
     threshold?: number;
+    agentAddress?: `0x${string}`;
 }
 
 export function AgentCard({
@@ -27,16 +29,20 @@ export function AgentCard({
     lastActionTime,
     apyDelta,
     threshold,
+    agentAddress,
 }: AgentCardProps) {
     const [prevRank, setPrevRank] = useState(rank);
     const [trend, setTrend] = useState<"up" | "down" | "same">("same");
+    const stats = useAgentContract(agentAddress);
+    console.log("📊 Reading stats from:", agentAddress);
+    console.log("Stats result:", stats);
 
     useEffect(() => {
         if (rank < prevRank) setTrend("up");
         else if (rank > prevRank) setTrend("down");
         else setTrend("same");
         setPrevRank(rank);
-    }, [rank, prevRank]); // Added prevRank to dependencies to fix exhaustive-deps
+    }, [rank, prevRank]);
 
     const getRankGradient = (r: number) => {
         switch (r) {
@@ -71,7 +77,6 @@ export function AgentCard({
         return `#${r}`;
     };
 
-    // Calculate progress towards threshold (visual estimation)
     const progressPercent =
         apyDelta && threshold ? Math.min((apyDelta / threshold) * 100, 100) : 0;
 
@@ -84,7 +89,7 @@ export function AgentCard({
                 opacity: 1,
                 y: 0,
                 background: getRankGradient(rank),
-                borderColor: getRankBorder(rank).split(" ")[2], // extracting color
+                borderColor: getRankBorder(rank).split(" ")[2],
             }}
             style={{
                 border: getRankBorder(rank),
@@ -177,6 +182,47 @@ export function AgentCard({
                     </div>
                 )}
             </div>
+
+            {/* ── On-Chain Stats Section ── */}
+            {agentAddress && (
+                <div className="relative z-10 mt-4 pt-4 border-t-2 border-green-500/30">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="text-xs font-bold text-green-400 uppercase tracking-wider">
+                            Live Contract
+                        </span>
+                        <a
+                            href={`https://monadvision.com/address/${agentAddress}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors group/link"
+                        >
+                            {agentAddress.slice(0, 6)}...{agentAddress.slice(-4)}
+                        </a>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-3">
+                        <div className="bg-green-500/5 border border-green-500/20 rounded-lg p-2 text-center">
+                            <span className="text-sm font-bold text-green-400 block">
+                                {stats.isLoading ? "…" : stats.totalRebalances}
+                            </span>
+                            <span className="text-[10px] text-gray-400">Rebalances</span>
+                        </div>
+                        <div className="bg-green-500/5 border border-green-500/20 rounded-lg p-2 text-center">
+                            <span className="text-sm font-bold text-green-400 block">
+                                {stats.isLoading ? "…" : stats.currentPool === 0 ? "A" : "B"}
+                            </span>
+                            <span className="text-[10px] text-gray-400">Current Pool</span>
+                        </div>
+                        <div className="bg-green-500/5 border border-green-500/20 rounded-lg p-2 text-center">
+                            <span className="text-sm font-bold text-green-400 block">
+                                {stats.isLoading ? "…" : `${stats.lifetimeProfit}`}
+                            </span>
+                            <span className="text-[10px] text-gray-400">Profit (USDC)</span>
+                        </div>
+                    </div>
+                </div>
+            )}
         </motion.div>
     );
 }

@@ -25,7 +25,7 @@ const monadMainnet = defineChain({
     blockExplorers: {
         default: {
             name: "Monad Explorer",
-            url: "https://explorer.monad.xyz",
+            url: "https://monadvision.com",
         },
     },
     testnet: false,
@@ -34,7 +34,7 @@ const monadMainnet = defineChain({
 /**
  * Wagmi + RainbowKit configuration
  */
-const config = getDefaultConfig({
+export const config = getDefaultConfig({
     appName: "FlashYield AI",
     projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "b19da498b2694e1183d4e2e5597ac08b",
     chains: [monadMainnet],

@@ -535,7 +535,7 @@ export function AIChatbot() {
                                                         <span>Transaction confirmed!</span>
                                                         {action.txHash && (
                                                             <a
-                                                                href={`https://explorer.monad.xyz/tx/${action.txHash}`}
+                                                                href={`https://monadvision.com/tx/${action.txHash}`}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
                                                                 className="chat-tx-link"

@@ -1,0 +1,70 @@
+export const BASE_AGENT_ABI = [
+    {
+        type: "function",
+        name: "name",
+        inputs: [],
+        outputs: [{ name: "", type: "string" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "rebalanceThreshold",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "currentPool",
+        inputs: [],
+        outputs: [{ name: "", type: "uint8" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "totalRebalances",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "lifetimeProfit",
+        inputs: [],
+        outputs: [{ name: "", type: "uint256" }],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "getStats",
+        inputs: [],
+        outputs: [
+            { name: "_totalRebalances", type: "uint256" },
+            { name: "_currentPool", type: "uint8" },
+            { name: "_lifetimeProfit", type: "uint256" },
+            { name: "_threshold", type: "uint256" },
+        ],
+        stateMutability: "view",
+    },
+    {
+        type: "function",
+        name: "executeStrategy",
+        inputs: [
+            { name: "poolAApy", type: "uint256" },
+            { name: "poolBApy", type: "uint256" },
+            { name: "simulatedProfit", type: "uint256" },
+        ],
+        outputs: [],
+        stateMutability: "nonpayable",
+    },
+    {
+        type: "event",
+        name: "AgentRebalanced",
+        inputs: [
+            { name: "timestamp", type: "uint256", indexed: true },
+            { name: "fromPool", type: "uint8", indexed: false },
+            { name: "toPool", type: "uint8", indexed: false },
+            { name: "profit", type: "uint256", indexed: false },
+        ],
+    },
+] as const;
