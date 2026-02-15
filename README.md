@@ -24,6 +24,15 @@
   </a>
 </div>
 
+<br />
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=y1wjcFf1dOs">
+    <img src="https://img.youtube.com/vi/y1wjcFf1dOs/0.jpg" alt="Watch the Demo" width="600" />
+  </a>
+  <p><em>📺 Watch the 2-minute demo</em></p>
+</div>
+
 ---
 
 ## 📖 Overview
