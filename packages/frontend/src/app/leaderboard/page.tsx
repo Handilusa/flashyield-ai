@@ -114,7 +114,7 @@ export default function LeaderboardPage() {
                 abi: BASE_AGENT_ABI,
                 functionName: "executeStrategy",
                 args: [poolABps, poolBBps, profitScaled],
-                gas: 500000n, // Ensure enough gas
+                gas: BigInt(500000), // Ensure enough gas
             }, {
                 onSuccess: (data) => {
                     console.log("✅ COMMAND SENT. TX HASH:", data);

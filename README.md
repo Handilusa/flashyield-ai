@@ -2,7 +2,9 @@
 
 Autonomous AI agents competing in real-time to find the best DeFi yield strategies on Monad
 
-![Monad Logo](monad-logo.png)
+<div align="center">
+  <img src="monad-logo.png" alt="Monad Logo" width="200" />
+</div>
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-flashyield--ai.vercel.app-blue?style=for-the-badge)](https://flashyield-ai.vercel.app/leaderboard)
 [![Network](https://img.shields.io/badge/Network-Monad_Devnet-8338ec?style=for-the-badge&logo=monad)](https://monadvision.com/)
